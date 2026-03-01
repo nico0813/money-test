@@ -135,7 +135,7 @@
       border-radius:12px;padding:6px;
     }
 
-    /* 结果 */
+    /* 结果卡 */
     .resultCard{
       padding:16px;border-radius:22px;
       background:
@@ -145,72 +145,156 @@
     }
     .resHead{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
     .avatar{
-      width:80px;height:80px;border-radius:26px;
-      background:#0b1020;
+      width:90px;height:110px;border-radius:18px;
+      background:#020617;
       padding:6px;
       box-shadow:0 16px 45px rgba(0,0,0,.7);
       flex-shrink:0;
+      position:relative;
+      overflow:hidden;
     }
-    .chibi{
-      width:100%;height:100%;border-radius:22px;
-      background:radial-gradient(circle at 30% 0%, #fff, transparent 55%);
-      position:relative;overflow:hidden;
+    .cardFrame{
+      width:100%;height:100%;border-radius:14px;
+      padding:6px;
+      background:linear-gradient(135deg,rgba(255,255,255,.3),rgba(15,23,42,1));
+      position:relative;
     }
-    .chibi-face{
+    .cardInner{
+      width:100%;height:100%;
+      border-radius:10px;
+      background:radial-gradient(circle at 10% 0%,rgba(255,255,255,.5),transparent 55%),
+                  radial-gradient(circle at 90% 100%,rgba(15,23,42,.9),#020617);
+      position:relative;
+      overflow:hidden;
+    }
+    .cardLabel{
+      position:absolute;top:6px;left:6px;
+      padding:3px 7px;border-radius:999px;
+      font-size:9px;font-weight:700;
+      background:rgba(15,23,42,.78);
+      color:#e5e7eb;
+      border:1px solid rgba(148,163,184,.7);
+    }
+    .bigLetter{
+      position:absolute;top:6px;right:8px;
+      font-size:24px;font-weight:900;
+      color:rgba(15,23,42,.35);
+    }
+    .faceWrap{
       position:absolute;left:50%;top:46%;
-      width:58%;height:58%;
       transform:translate(-50%,-50%);
+      width:58%;height:58%;
+      border-radius:999px;
       background:#ffe7d6;
-      border-radius:45px;
       box-shadow:0 4px 10px rgba(0,0,0,.35);
     }
     .eye{
-      position:absolute;top:38%;width:12px;height:16px;
+      position:absolute;top:38%;width:12px;height:18px;
       border-radius:999px;
       background:#111827;
       box-shadow:0 0 0 2px rgba(0,0,0,.3);
     }
-    .eye.left{left:32%}
-    .eye.right{right:32%}
+    .eye.left{left:28%}
+    .eye.right{right:28%}
     .eye::after{
       content:"";
       position:absolute;top:3px;left:3px;
       width:5px;height:5px;border-radius:999px;
-      background:rgba(255,255,255,.9);
+      background:rgba(255,255,255,.95);
     }
     .mouth{
-      position:absolute;left:50%;top:63%;
-      width:22px;height:12px;
+      position:absolute;left:50%;top:66%;
+      width:24px;height:13px;
       border-radius:0 0 999px 999px;
       border-bottom:3px solid #9f1239;
       transform:translateX(-50%);
     }
     .blush{
-      position:absolute;top:56%;width:14px;height:8px;
+      position:absolute;top:56%;width:16px;height:8px;
       border-radius:999px;
       background:rgba(248,113,113,.55);
       filter:blur(1px);
     }
-    .blush.left{left:20%}
-    .blush.right{right:20%}
-    .hair{
-      position:absolute;left:50%;top:10%;
-      width:80%;height:50%;
+    .blush.left{left:18%}
+    .blush.right{right:18%}
+    .hairBand{
+      position:absolute;left:50%;top:8%;
       transform:translateX(-50%);
-      border-radius:50px;
+      width:82%;height:52%;
+      border-radius:52px;
     }
-    .badgeTag{
-      position:absolute;left:10px;bottom:10px;
-      padding:4px 8px;border-radius:999px;
-      font-size:10px;font-weight:700;
-      background:rgba(15,23,42,.8);
-      color:#e5e7eb;
-      border:1px solid rgba(148,163,184,.7);
+    /* 各类型卡面配色 + 小道具 */
+    .avatar-A .hairBand{
+      background:linear-gradient(135deg,#f97316,#facc15);
     }
-    .avatar-A .hair{background:linear-gradient(135deg,#f97316,#facc15);}
-    .avatar-B .hair{background:linear-gradient(135deg,#22c55e,#14b8a6);}
-    .avatar-C .hair{background:linear-gradient(135deg,#38bdf8,#6366f1);}
-    .avatar-D .hair{background:linear-gradient(135deg,#f472b6,#fb7185);}
+    .avatar-B .hairBand{
+      background:linear-gradient(135deg,#22c55e,#14b8a6);
+    }
+    .avatar-C .hairBand{
+      background:linear-gradient(135deg,#38bdf8,#6366f1);
+    }
+    .avatar-D .hairBand{
+      background:linear-gradient(135deg,#f472b6,#fb7185);
+    }
+    .prop{
+      position:absolute;opacity:.85;
+    }
+    .prop-coin{
+      width:18px;height:18px;border-radius:999px;
+      background:radial-gradient(circle at 30% 20%,#fefce8,#facc15);
+      border:2px solid #eab308;
+      right:8px;bottom:10px;
+      box-shadow:0 0 10px rgba(234,179,8,.6);
+    }
+    .prop-rocket{
+      right:6px;bottom:8px;width:22px;height:32px;
+    }
+    .rocket-body{
+      width:14px;height:22px;border-radius:999px;
+      background:linear-gradient(135deg,#e5e7eb,#60a5fa);
+      margin:0 auto;position:relative;
+    }
+    .rocket-body::before{
+      content:"";
+      position:absolute;top:-9px;left:50%;
+      transform:translateX(-50%);
+      width:0;height:0;
+      border-left:7px solid transparent;
+      border-right:7px solid transparent;
+      border-bottom:9px solid #60a5fa;
+    }
+    .rocket-fire{
+      width:10px;height:12px;
+      background:radial-gradient(circle at 50% 0%,#f97316,#be123c);
+      border-radius:999px;
+      margin:0 auto;margin-top:1px;
+    }
+    .prop-book{
+      left:8px;bottom:9px;width:26px;height:18px;
+      background:linear-gradient(135deg,#e5e7eb,#bfdbfe);
+      border-radius:3px;
+      box-shadow:0 0 8px rgba(59,130,246,.5);
+      position:absolute;
+    }
+    .prop-book::before{
+      content:"";position:absolute;left:3px;top:4px;
+      width:20px;height:2px;border-radius:999px;
+      background:#93c5fd;
+      box-shadow:0 5px 0 #bfdbfe;
+    }
+    .prop-bubble{
+      right:10px;bottom:12px;width:26px;height:18px;
+      border-radius:9px;
+      background:radial-gradient(circle at 30% 20%,#eef2ff,#c7d2fe);
+      box-shadow:0 0 10px rgba(129,140,248,.6);
+      position:absolute;
+    }
+    .prop-bubble::after{
+      content:"";position:absolute;left:6px;top:5px;
+      width:12px;height:2px;border-radius:999px;
+      background:#818cf8;
+      box-shadow:0 5px 0 #a5b4fc;
+    }
 
     .rMain{}
     .rtype{font-size:13px;opacity:.85;margin-bottom:2px}
@@ -663,7 +747,6 @@
     }
   };
 
-  // DOM
   const $ = id => document.getElementById(id);
   const gate = $("gate");
   const quiz = $("quiz");
@@ -749,6 +832,10 @@
       }
     };
     $("nextBtn").onclick = () => {
+      if(!answers[idx]){
+        alert("这一题还没选哦，先选一个再进入下一题。");
+        return;
+      }
       if(idx < QUESTIONS.length - 1){
         idx++;
         renderQuestion();
@@ -764,36 +851,46 @@
   function computeType(){
     const score = {A:0,B:0,C:0,D:0};
     answers.forEach(a=>{ if(a) score[a]++; });
-    const priority = {C:4,D:3,A:2,B:1}; // 打平优先
+    const priority = {C:4,D:3,A:2,B:1};
     const sorted = Object.entries(score).sort((x,y)=>{
       if(y[1]!==x[1]) return y[1]-x[1];
       return priority[y[0]] - priority[x[0]];
     });
-    return sorted[0][0]; // A/B/C/D
+    return sorted[0][0];
   }
 
   function avatarHTML(type){
     const t = TYPES[type];
+    // 不同类型换不同小道具
+    const props = {
+      A:'<div class="prop prop-coin"></div>',
+      B:'<div class="prop prop-rocket"><div class="rocket-body"></div><div class="rocket-fire"></div></div>',
+      C:'<div class="prop prop-book"></div>',
+      D:'<div class="prop prop-bubble"></div>'
+    }[type] || "";
     return `
       <div class="avatar avatar-${type}">
-        <div class="chibi">
-          <div class="hair"></div>
-          <div class="chibi-face">
-            <div class="eye left"></div>
-            <div class="eye right"></div>
-            <div class="blush left"></div>
-            <div class="blush right"></div>
-            <div class="mouth"></div>
+        <div class="cardFrame">
+          <div class="cardInner">
+            <div class="cardLabel">${t.badge}</div>
+            <div class="bigLetter">${t.tag}</div>
+            <div class="hairBand"></div>
+            <div class="faceWrap">
+              <div class="eye left"></div>
+              <div class="eye right"></div>
+              <div class="blush left"></div>
+              <div class="blush right"></div>
+              <div class="mouth"></div>
+            </div>
+            ${props}
           </div>
-          <div class="badgeTag">${t.badge}</div>
         </div>
       </div>
     `;
   }
 
-  // ====== 结果页：带“计算中”遮罩 ======
+  // 结果页：带“计算中”遮罩
   function showResult() {
-    // 创建并显示加载遮罩
     const overlay = document.createElement('div');
     overlay.id = 'loadingOverlay';
     overlay.innerHTML = `
@@ -802,7 +899,6 @@
     `;
     document.body.appendChild(overlay);
 
-    // 文案跳动
     const statuses = [
       "正在扫描你的搞钱潜意识...",
       "正在比对 48 组金钱阴影模型...",
@@ -818,7 +914,6 @@
       }
     }, 600);
 
-    // 2.5 秒后真正渲染结果
     setTimeout(() => {
       clearInterval(statusInterval);
 
@@ -843,7 +938,7 @@
       overlay.style.opacity = '0';
       setTimeout(() => overlay.remove(), 400);
       window.scrollTo({top: 0, behavior: "smooth"});
-    }, 2500); // 2.5秒：有仪式感又不至于烦
+    }, 2500);
   }
 
   function resetAll(){
@@ -856,7 +951,6 @@
     window.scrollTo({top:0,behavior:"instant"});
   }
 
-  // 截图生成：不下载，只显示在页面
   function generateShot(){
     const node = $("resultCard");
     html2canvas(node,{backgroundColor:null}).then(canvas=>{
@@ -867,7 +961,6 @@
     }).catch(()=>alert("截图失败，可以稍后重试一次。"));
   }
 
-  // 事件绑定
   $("unlock").onclick = () => {
     const v = ($("code").value || "").trim();
     if(v !== TODAY_CODE){
@@ -889,7 +982,6 @@
   $("shotBtn").onclick = generateShot;
   $("againBtn").onclick = resetAll;
 
-  // 初始进度
   updateProgress();
 </script>
 </body>
