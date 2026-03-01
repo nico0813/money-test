@@ -1,283 +1,763 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026 钱味觉醒测试</title>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <meta charset="utf-8" />
+  <title>2026 钱味觉醒测试｜完整版</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <!-- 截图用 -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    :root{
+      --bg:#050612;
+      --tx:#edf1ff;
+      --sub:#a5aecb;
+      --bd:rgba(255,255,255,.16);
+      --glass:rgba(10,13,30,.86);
+      --glass2:rgba(13,18,40,.96);
+      --shadow:0 18px 60px rgba(0,0,0,.55);
+      --accent:#ff3d8d;
+      --accent2:#7c3aed;
+      --accent3:#22c55e;
+      --max:960px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"PingFang SC","Microsoft YaHei",sans-serif;
+      color:var(--tx);
+      background:
+        radial-gradient(900px 600px at 10% 5%, rgba(255,61,141,.26), transparent 60%),
+        radial-gradient(900px 600px at 90% 20%, rgba(124,58,237,.28), transparent 60%),
+        radial-gradient(900px 600px at 60% 90%, rgba(34,197,94,.22), transparent 60%),
+        #020314;
+      padding:16px 12px 48px;
+    }
+    .wrap{max-width:var(--max);margin:0 auto}
+    .hidden{display:none !important}
 
-<style>
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;
-  background:#0c0c18;
-  color:#fff;
-  padding:20px;
-}
+    .hero,.card{
+      border:1px solid var(--bd);
+      border-radius:22px;
+      padding:16px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+    }
+    .hero{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(11,16,40,.95));
+      margin-bottom:14px;
+    }
+    .card{
+      background:linear-gradient(180deg, var(--glass2), var(--glass));
+      margin-top:12px;
+    }
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .space{justify-content:space-between}
+    h1{margin:0 0 6px;font-size:18px;letter-spacing:.2px}
+    .sub{margin:0;color:var(--sub);font-size:13px;line-height:1.7}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:7px 12px;border-radius:999px;
+      border:1px solid var(--bd);
+      background:rgba(255,255,255,.04);
+      font-size:12px;color:var(--sub);
+    }
 
-.container{
-  max-width:720px;
-  margin:auto;
-}
+    input{
+      width:min(420px,100%);
+      border:1px solid rgba(255,255,255,.2);
+      background:rgba(6,9,26,.9);
+      color:var(--tx);
+      border-radius:16px;
+      padding:11px 12px;
+      font-size:14px;
+      outline:none;
+    }
+    input::placeholder{color:#8f9abd}
 
-.card{
-  background:linear-gradient(145deg,#191933,#121226);
-  border-radius:20px;
-  padding:22px;
-  margin-top:20px;
-  box-shadow:0 0 30px rgba(124,58,237,0.2);
-}
+    button{
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06);
+      color:var(--tx);
+      border-radius:16px;
+      padding:9px 13px;
+      font-weight:700;
+      cursor:pointer;
+      font-size:13px;
+    }
+    button.primary{
+      border-color:transparent;
+      background:linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+    button:disabled{opacity:.5;cursor:not-allowed}
 
-button{
-  padding:10px 16px;
-  border-radius:14px;
-  border:none;
-  margin:6px 4px;
-  font-weight:bold;
-  cursor:pointer;
-}
+    .progressWrap{margin-top:10px}
+    .bar{
+      height:10px;border-radius:999px;background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);overflow:hidden;
+    }
+    .fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent3),#60a5fa,var(--accent))}
+    .ptext{margin-top:8px;color:var(--sub);font-size:12px}
 
-.primary{
-  background:linear-gradient(90deg,#ff3d8d,#7c3aed);
-  color:white;
-}
+    .mini{color:var(--sub);font-size:12px;line-height:1.6}
+    .divider{height:1px;background:rgba(255,255,255,.12);margin:12px 0}
 
-.secondary{
-  background:#222;
-  color:#ddd;
-}
+    /* 问题 */
+    .qindex{color:#f9fafb;font-size:12px;font-weight:700;margin-bottom:4px;opacity:.9}
+    .qtitle{margin:0 0 10px;font-size:15px;font-weight:900;line-height:1.5}
+    .opts{display:grid;gap:10px}
+    label.opt{
+      display:block;cursor:pointer;
+      border:1px solid rgba(255,255,255,.16);
+      background:linear-gradient(180deg, rgba(34,40,80,.95), rgba(12,15,40,.96));
+      border-radius:18px;
+      padding:10px;
+      transition:transform .08s ease,border-color .12s ease,box-shadow .12s ease;
+    }
+    label.opt:hover{
+      transform:translateY(-1px);
+      border-color:rgba(255,255,255,.3);
+      box-shadow:0 10px 25px rgba(0,0,0,.45);
+    }
+    .inner{display:flex;gap:10px;align-items:flex-start}
+    .k{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:28px;height:28px;border-radius:11px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.2);
+      font-weight:900;flex:0 0 auto;
+    }
+    .otxt{line-height:1.5;font-size:14px}
+    input[type="radio"]{display:none}
+    input[type="radio"]:checked + .inner{
+      outline:2px solid rgba(255,61,141,.7);
+      border-radius:12px;padding:6px;
+    }
 
-.option{
-  background:#1e1e33;
-  padding:12px;
-  border-radius:14px;
-  margin:8px 0;
-  cursor:pointer;
-  transition:0.2s;
-}
+    .navRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 
-.option:hover{
-  background:#2a2a4d;
-}
+    /* 结果 */
+    .resultCard{
+      padding:16px;border-radius:22px;
+      background:
+        linear-gradient(135deg, rgba(255,61,141,.15), rgba(124,58,237,.18)),
+        #050617;
+      border:1px solid rgba(255,255,255,.18);
+    }
+    .resHead{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+    .avatar{
+      width:68px;height:68px;border-radius:24px;
+      background:radial-gradient(circle at 30% 10%, #fff, transparent 55%),linear-gradient(135deg,#ff3d8d,#7c3aed);
+      display:flex;align-items:center;justify-content:center;
+      font-size:34px;
+      box-shadow:0 12px 40px rgba(0,0,0,.6);
+      flex-shrink:0;
+    }
+    .rMain{}
+    .rtype{font-size:13px;opacity:.85;margin-bottom:2px}
+    .rtitle{font-size:18px;font-weight:900}
+    .raka{font-size:12px;color:var(--sub)}
 
-.progress{
-  height:8px;
-  background:#222;
-  border-radius:6px;
-  overflow:hidden;
-  margin-top:12px;
-}
+    .resBody{margin-top:12px;font-size:13px;line-height:1.8;white-space:pre-wrap}
+    .resBody p{margin:0 0 6px}
+    .resBody hr{border:none;border-top:1px dashed rgba(148,163,184,.5);margin:8px 0}
 
-.progress-bar{
-  height:100%;
-  background:linear-gradient(90deg,#22c55e,#60a5fa,#ff3d8d);
-  width:0%;
-  transition:0.3s;
-}
-
-@keyframes glowPulse {
-  0% { text-shadow: 0 0 5px #ff3d8d; }
-  50% { text-shadow: 0 0 20px #7c3aed; }
-  100% { text-shadow: 0 0 5px #ff3d8d; }
-}
-
-.result-title{
-  font-size:28px;
-  font-weight:900;
-  animation:glowPulse 2s infinite;
-}
-
-.power-bar{
-  height:10px;
-  background:#222;
-  border-radius:8px;
-  margin-top:10px;
-  overflow:hidden;
-}
-
-.power-fill{
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,#ff3d8d,#7c3aed,#22c55e);
-  transition:width 1.5s ease;
-}
-</style>
+    .shotImg{width:100%;border-radius:18px;margin-top:10px;border:1px solid rgba(148,163,184,.5)}
+    .shotNote{font-size:12px;color:var(--sub);margin-top:4px}
+  </style>
 </head>
 
 <body>
-<div class="container">
+<div class="wrap">
 
-<div id="start">
-<h2>2026 钱味觉醒测试</h2>
-<button class="primary" onclick="startTest()">开始测试</button>
-</div>
+  <!-- 口令页 -->
+  <section class="hero" id="gate">
+    <div class="row space">
+      <div>
+        <h1>2026 钱味觉醒测试｜完整版</h1>
+        <p class="sub">
+          20 道题，帮你看清：你到底是哪一种搞钱体质。<br>
+          不是算命，是把你脑子里那套钱观，翻译成一句人话。
+        </p>
+      </div>
+      <div class="pill">20题｜约2分钟｜建议截图结果卡</div>
+    </div>
 
-<div id="quiz" style="display:none;">
-<div class="card">
-<h3 id="question"></h3>
-<div id="options"></div>
-<div>
-<button class="secondary" onclick="prevQuestion()">上一题</button>
-<button class="secondary" onclick="nextQuestion()">下一题</button>
-<button class="secondary" onclick="resetTest()">返回最开始</button>
-</div>
-<div class="progress">
-<div class="progress-bar" id="progressBar"></div>
-</div>
-</div>
-</div>
+    <div class="row" style="margin-top:12px">
+      <input id="code" placeholder="输入神秘口令（下单后自动回复里）" />
+      <button class="primary" id="unlock">开始测试</button>
+    </div>
 
-<div id="result" style="display:none;">
-<div class="card" id="resultContent"></div>
-<button class="primary" onclick="saveImage()">保存为图片</button>
-<button class="secondary" onclick="resetTest()">重新测试</button>
-</div>
+    <div class="progressWrap">
+      <div class="bar"><div class="fill" id="fill"></div></div>
+      <div class="ptext" id="ptext">进度：0 / 20</div>
+    </div>
+
+    <p class="mini" style="margin-top:10px">
+      提示：口令错了会直接拦截；测试结果只保存在你自己设备里，建议测完立刻截图。
+    </p>
+  </section>
+
+  <!-- 题目页 -->
+  <section class="card hidden" id="quiz"></section>
+
+  <!-- 结果页 -->
+  <section class="card hidden" id="result">
+    <div class="resultCard" id="resultCard"></div>
+
+    <div class="divider"></div>
+
+    <div class="row navRow">
+      <button class="primary" id="shotBtn">生成截图卡片</button>
+      <button id="againBtn">返回最开始重新测</button>
+    </div>
+    <p class="shotNote">
+      生成后，往下滑，长按图片即可保存 / 转发到小红书 / 朋友圈。
+    </p>
+  </section>
+
+  <!-- 截图预览 -->
+  <section class="card hidden" id="shotWrap">
+    <p class="mini">↓ 已为你生成结果截图卡片</p>
+    <img id="shotImg" class="shotImg" alt="测试结果截图" />
+  </section>
 
 </div>
 
 <script>
+  // ====== 配置区 ======
+  const TODAY_CODE = "WAKEN2026"; // 神秘口令，你可以随时改
 
-const questions = [
-{q:"你银行卡余额低于4位数时的反应？",o:["立刻焦虑算钱","还能再搏一把","是不是不够厉害","找人倾诉"]},
-{q:"如果突然失业，你第一步？",o:["削减开支","找更大的机会","报课升级","联系所有人"]},
-{q:"你更害怕哪种未来？",o:["不稳定","错过风口","被淘汰","单打独斗"]},
-{q:"别人暴富你心里一句？",o:["运气而已","我也想赌一把","他有本事","背后有人"]},
-{q:"做决定卡在哪？",o:["安不安全","值不值得赌","逻辑对不对","有没有队友"]},
-{q:"最容易花钱在哪？",o:["让生活更稳","让自己爽","提升能力","维系关系"]},
-{q:"最讨厌被说？",o:["胆小","冲动","只会学习","只会靠人"]},
-{q:"机会和安全冲突？",o:["选安全","选机会","研究更久","拉人一起"]},
-{q:"更愿意用什么换钱？",o:["时间","运气","技能","人脉"]},
-{q:"最不甘心？",o:["本可更稳","本可更赚","本可更强","本可更多资源"]},
-{q:"更相信什么？",o:["规则","时机","能力","关系"]},
-{q:"最大焦虑？",o:["不够安全","不够成功","不够优秀","不够后台"]},
-{q:"收入下降时？",o:["收缩","加码","复盘","求助"]},
-{q:"对稳定态度？",o:["必须","无聊","基础","共享"]},
-{q:"最羡慕谁？",o:["钱多又稳","一夜翻身","实力碾压","背景强大"]},
-{q:"更怕？",o:["亏钱","错过","退步","没人撑"]},
-{q:"常安慰自己？",o:["稳一点","下次一定","再准备一下","找人问问"]},
-{q:"人生更像？",o:["打地基","抢跑道","升级打怪","组队通关"]},
-{q:"钱不是问题优先提升？",o:["安全垫","速度","能力","圈子"]},
-{q:"内心最真实渴望？",o:["安心","翻盘","强大","有人撑腰"]}
-];
+  // 题目（按你给的版本）
+  const QUESTIONS = [
+    { t:"你银行卡余额低于 4 位数时，你最真实的反应是？", o:{
+      A:"立刻焦虑，开始算钱",
+      B:"心想：还能再搏一把",
+      C:"自责：我是不是不够厉害",
+      D:"想找个人倾诉"
+    }},
+    { t:"如果突然失业，你第一步会？", o:{
+      A:"立刻削减开支",
+      B:"找下一个更大的机会",
+      C:"报个课，升级自己",
+      D:"联系所有认识的人"
+    }},
+    { t:"你更害怕哪种未来？", o:{
+      A:"不稳定",
+      B:"错过风口",
+      C:"被淘汰",
+      D:"单打独斗"
+    }},
+    { t:"别人暴富，你心里最真实的一句是？", o:{
+      A:"运气而已",
+      B:"我也想赌一把",
+      C:"他肯定有本事",
+      D:"背后一定有人"
+    }},
+    { t:"你做决定时最常卡住的点？", o:{
+      A:"安不安全",
+      B:"值不值得赌",
+      C:"逻辑是不是对",
+      D:"有没有队友"
+    }},
+    { t:"你最容易在哪件事上花钱？", o:{
+      A:"让生活更稳",
+      B:"让自己爽",
+      C:"提升能力",
+      D:"维系关系"
+    }},
+    { t:"你更讨厌被说成？", o:{
+      A:"胆小",
+      B:"冲动",
+      C:"只会学习",
+      D:"只会靠人"
+    }},
+    { t:"如果机会和安全感冲突，你会？", o:{
+      A:"选安全",
+      B:"选机会",
+      C:"研究更久",
+      D:"拉人一起"
+    }},
+    { t:"你更愿意用什么换钱？", o:{
+      A:"时间",
+      B:"运气",
+      C:"技能",
+      D:"人脉"
+    }},
+    { t:"你最不甘心的是？", o:{
+      A:"本来可以更稳",
+      B:"本来可以更赚",
+      C:"本来可以更强",
+      D:"本来可以更多资源"
+    }},
+    { t:"你更相信什么能改变命运？", o:{
+      A:"规则",
+      B:"时机",
+      C:"能力",
+      D:"关系"
+    }},
+    { t:"你的人生最大焦虑是？", o:{
+      A:"不够安全",
+      B:"不够成功",
+      C:"不够优秀",
+      D:"不够有后台"
+    }},
+    { t:"当收入下降，你更容易？", o:{
+      A:"收缩",
+      B:"加码",
+      C:"复盘",
+      D:"求助"
+    }},
+    { t:"你对“稳定”的态度是？", o:{
+      A:"必须",
+      B:"无聊",
+      C:"基础",
+      D:"可以共享"
+    }},
+    { t:"你最羡慕哪种人？", o:{
+      A:"钱多又稳",
+      B:"一夜翻身",
+      C:"实力碾压",
+      D:"背景强大"
+    }},
+    { t:"你更怕什么？", o:{
+      A:"亏钱",
+      B:"错过",
+      C:"退步",
+      D:"没人撑"
+    }},
+    { t:"你最常安慰自己的一句话是？", o:{
+      A:"稳一点就好",
+      B:"下次一定行",
+      C:"我再准备一下",
+      D:"我去找人问问"
+    }},
+    { t:"你的人生更像？", o:{
+      A:"打地基",
+      B:"抢跑道",
+      C:"升级打怪",
+      D:"组队通关"
+    }},
+    { t:"如果钱不是问题，你会优先提升？", o:{
+      A:"安全垫",
+      B:"速度",
+      C:"能力",
+      D:"圈子"
+    }},
+    { t:"最后一题，你内心最真实的渴望是？", o:{
+      A:"安心",
+      B:"翻盘",
+      C:"强大",
+      D:"有人撑腰"
+    }}
+  ];
 
-let current=0;
-let answers=[];
+  // 结果文案（你的完整版）
+  const TYPES = {
+    A:{
+      emoji:"💰",
+      title:"🅰 人间稳妥小财神",
+      aka:"（AKA：活到决赛圈型选手）",
+      body:`
+你的财富人设
 
-function startTest(){
- document.getElementById("start").style.display="none";
- document.getElementById("quiz").style.display="block";
- showQuestion();
-}
+别人研究流量密码，你研究安全边际。
+别人上头冲刺，你在算退路。
 
-function showQuestion(){
- let q=questions[current];
- document.getElementById("question").innerText=(current+1)+". "+q.q;
- let html="";
- q.o.forEach((opt,i)=>{
-  html+=`<div class="option" onclick="selectOption(${i})">${opt}</div>`;
- });
- document.getElementById("options").innerHTML=html;
- updateProgress();
-}
+你不是不想暴富。
+你只是太清楚——翻车有多疼。
 
-function selectOption(i){
- answers[current]=i;
-}
+你的人生关键词不是“躺赢”。
+是“别崩”。
 
-function nextQuestion(){
- if(current<questions.length-1){
-  current++;
-  showQuestion();
- }else{
-  showResult();
- }
-}
+⸻
 
-function prevQuestion(){
- if(current>0){
-  current--;
-  showQuestion();
- }
-}
+你的隐藏设定
 
-function resetTest(){
- current=0;
- answers=[];
- document.getElementById("result").style.display="none";
- document.getElementById("quiz").style.display="none";
- document.getElementById("start").style.display="block";
-}
+✔ 抗风险能力 MAX
+✔ 情绪稳定天赋
+✔ 余额低于某条线会自动焦虑
 
-function updateProgress(){
- let percent=(current/questions.length)*100;
- document.getElementById("progressBar").style.width=percent+"%";
-}
+你是那种——
+别人爆仓时还能睡觉的人。
 
-function showResult(){
- document.getElementById("quiz").style.display="none";
- document.getElementById("result").style.display="block";
- 
- let counts=[0,0,0,0];
- answers.forEach(a=>counts[a]++);
- let maxIndex=counts.indexOf(Math.max(...counts));
+⸻
 
- const types=[
-  "🅰 人间稳妥小财神",
-  "🅱 天生机会捕捉者",
-  "🅲 自我增值天花板",
-  "🅳 团队粘合剂"
- ];
+你的金钱盲区
 
- const lines=[
-  "你不会最快，但你几乎不会退场。",
-  "你不缺机会，你缺刹车。",
-  "你迟早会贵，只是还没开口。",
-  "你不适合躺赢，你适合带人赢。"
- ];
+你最大的损失，往往不是亏钱。
+是“再等等”。
 
- let power=Math.floor(75+Math.random()*20);
+你等趋势确认。
+趋势等你确认吗？
 
- document.getElementById("resultContent").innerHTML=`
-  <div class="result-title">${types[maxIndex]}</div>
-  <p>${lines[maxIndex]}</p>
+⸻
 
-  <div style="margin-top:20px;font-weight:bold;">
-    2026 财富战力值：<span id="powerValue">0</span>%
-  </div>
+2026 升级副本
 
-  <div class="power-bar">
-    <div class="power-fill" id="powerFill"></div>
-  </div>
- `;
+给自己一个“可翻车额度”。
 
- setTimeout(()=>{
-   document.getElementById("powerFill").style.width=power+"%";
-   animateNumber("powerValue",power);
- },300);
-}
+别把 100% 都锁在安全感里。
+20% 用来试错，
+你会发现你没想象中那么脆。
 
-function animateNumber(id,target){
- let el=document.getElementById(id);
- let current=0;
- let interval=setInterval(()=>{
-   current+=2;
-   if(current>=target){
-     current=target;
-     clearInterval(interval);
-   }
-   el.innerText=current;
- },20);
-}
+⸻
 
-function saveImage(){
- html2canvas(document.getElementById("resultContent")).then(canvas=>{
-  let link=document.createElement("a");
-  link.download="钱味测试结果.png";
-  link.href=canvas.toDataURL();
-  link.click();
- });
-}
+互联网版一句话
 
+你不会最快。
+但你几乎不会退场。
+
+⸻
+
+👉 稳妥小财神集合。
+评论区看看我们是不是最后活下来的那批人。`
+    },
+    B:{
+      emoji:"⚡",
+      title:"🅱 天生机会捕捉者",
+      aka:"（AKA：风口冲浪选手）",
+      body:`
+你的财富人设
+
+你对“可能翻倍”有天线。
+流量一动，你就感应到了。
+
+你的人生是快节奏剪辑版。
+稳一点？对你来说是 torture。
+
+⸻
+
+你的隐藏设定
+
+✔ 行动力爆炸
+✔ 敢尝试
+✔ 不甘心当旁观者
+
+别人还在观望，
+你已经试过三次。
+
+⸻
+
+你的金钱盲区
+
+你输的不是判断。
+是——不肯收手。
+
+赚的时候像爽文主角。
+回撤的时候像反派觉醒。
+
+⸻
+
+2026 升级副本
+
+所有进场，都写退出。
+
+你不需要变稳。
+你需要一个“自动刹车系统”。
+
+⸻
+
+互联网版一句话
+
+你这辈子不会没机会。
+你只怕自己停不下来。
+
+⸻
+
+👉 冲浪选手集合。
+是不是每次都“差一点就翻倍”？`
+    },
+    C:{
+      emoji:"📚",
+      title:"🅲 自我增值天花板",
+      aka:"（AKA：升级流主角）",
+      body:`
+你的财富人设
+
+别人追热点，你打磨自己。
+别人研究躺赢，你研究长期复利。
+
+你的人生像 RPG。
+等级慢慢升，突然一波质变。
+
+⸻
+
+你的隐藏设定
+
+✔ 学习力拉满
+✔ 复盘能力强
+✔ 自我要求极高
+
+你是那种——
+别人三年变一次，你一年升级三次。
+
+⸻
+
+你的金钱盲区
+
+你最大的问题不是不够强。
+是——不敢定价。
+
+你学得飞快。
+但变现慢半拍。
+
+⸻
+
+2026 升级副本
+
+每个月必须有一个“可卖成果”。
+
+停止准备。
+上线自己。
+
+⸻
+
+互联网版一句话
+
+你迟早会贵。
+问题是，你什么时候开口要价。
+
+⸻
+
+👉 升级流主角集合。
+是不是永远觉得自己“还不够好”？`
+    },
+    D:{
+      emoji:"🤝",
+      title:"🅳 团队粘合剂",
+      aka:"（AKA：搞钱搭子体质）",
+      body:`
+你的财富人设
+
+你不爱单刷。
+你爱组队。
+
+你天生自带搞钱搭子磁场。
+走到哪都有人愿意和你一起干。
+
+⸻
+
+你的隐藏设定
+
+✔ 资源整合能力强
+✔ 懂共情
+✔ 会撮合
+
+别人单刷副本。
+你开团。
+
+⸻
+
+你的金钱盲区
+
+你太讲情分。
+不太讲利益。
+
+规则不写清，
+最后你收尾。
+
+⸻
+
+2026 升级副本
+
+所有合作写清三件事：
+
+分工
+产出
+分成
+
+你不缺人脉。
+你缺边界。
+
+⸻
+
+互联网版一句话
+
+你不适合躺赢。
+你适合带人赢。
+
+⸻
+
+👉 搞钱搭子集合。
+你是不是也很难单打独斗？`
+    }
+  };
+
+  // ====== DOM 快捷 ======
+  const $ = id => document.getElementById(id);
+  const gate = $("gate");
+  const quiz = $("quiz");
+  const result = $("result");
+  const shotWrap = $("shotWrap");
+  const fill = $("fill");
+  const ptext = $("ptext");
+
+  let idx = 0;
+  const answers = Array(QUESTIONS.length).fill(null); // 存 A/B/C/D
+
+  function showOnly(which){
+    gate.classList.add("hidden");
+    quiz.classList.add("hidden");
+    result.classList.add("hidden");
+    if(which==="gate") gate.classList.remove("hidden");
+    if(which==="quiz") quiz.classList.remove("hidden");
+    if(which==="result") result.classList.remove("hidden");
+  }
+
+  function updateProgress(){
+    const done = answers.filter(x=>x!==null).length;
+    ptext.textContent = `进度：${done} / ${QUESTIONS.length}`;
+    fill.style.width = `${Math.round(done/QUESTIONS.length*100)}%`;
+  }
+
+  function renderQuestion(){
+    const q = QUESTIONS[idx];
+    const letters = ["A","B","C","D"];
+    quiz.innerHTML = `
+      <div>
+        <div class="qindex">第 ${idx+1} 题 / ${QUESTIONS.length}</div>
+        <p class="qtitle">${q.t}</p>
+        <div class="opts">
+          ${letters.map(k=>`
+            <label class="opt">
+              <input type="radio" name="q${idx}" value="${k}">
+              <div class="inner">
+                <div class="k">${k}</div>
+                <div class="otxt">${q.o[k]}</div>
+              </div>
+            </label>
+          `).join("")}
+        </div>
+        <div class="navRow">
+          <button id="prevBtn">上一题</button>
+          <button id="nextBtn">下一题</button>
+          <button id="backBtn">返回最开始</button>
+        </div>
+        <p class="mini" style="margin-top:6px">提示：点选选项会自动跳到下一题，想回头改可以用「上一题」。</p>
+      </div>
+    `;
+
+    // 恢复已选
+    if(answers[idx]){
+      const v = answers[idx];
+      const input = quiz.querySelector(`input[value="${v}"]`);
+      if(input) input.checked = true;
+    }
+
+    // 选项监听：自动进入下一题
+    quiz.querySelectorAll(`input[name="q${idx}"]`).forEach(r=>{
+      r.addEventListener("change", e=>{
+        const v = e.target.value;
+        answers[idx] = v;
+        updateProgress();
+        if(idx === QUESTIONS.length - 1){
+          showResult();
+        }else{
+          idx++;
+          renderQuestion();
+          window.scrollTo({top:0,behavior:"instant"});
+        }
+      });
+    });
+
+    // 导航按钮
+    $("prevBtn").onclick = () => {
+      if(idx>0){
+        idx--;
+        renderQuestion();
+        window.scrollTo({top:0,behavior:"instant"});
+      }
+    };
+    $("nextBtn").onclick = () => {
+      if(idx < QUESTIONS.length - 1){
+        idx++;
+        renderQuestion();
+        window.scrollTo({top:0,behavior:"instant"});
+      }else{
+        // 最后一题点“下一题”如果都答完就出结果
+        if(answers.every(x=>x!==null)) showResult();
+        else alert("还有题没选完哦，可以直接点选选项自动跳题。");
+      }
+    };
+    $("backBtn").onclick = resetAll;
+  }
+
+  function computeType(){
+    const score = {A:0,B:0,C:0,D:0};
+    answers.forEach(a=>{ if(a) score[a]++; });
+    const priority = {C:4,D:3,A:2,B:1}; // 打平时优先级
+    const sorted = Object.entries(score).sort((x,y)=>{
+      if(y[1]!==x[1]) return y[1]-x[1];
+      return priority[y[0]] - priority[x[0]];
+    });
+    return sorted[0][0]; // 返回 A/B/C/D
+  }
+
+  function showResult(){
+    const type = computeType();
+    const t = TYPES[type];
+
+    $("resultCard").innerHTML = `
+      <div class="resHead">
+        <div class="avatar">${t.emoji}</div>
+        <div class="rMain">
+          <div class="rtype">你的搞钱体质类型</div>
+          <div class="rtitle">${t.title}</div>
+          <div class="raka">${t.aka}</div>
+        </div>
+      </div>
+      <div class="resBody">
+        ${t.body.replace(/\n/g,"<br>")}
+      </div>
+    `;
+
+    showOnly("result");
+    shotWrap.classList.add("hidden");
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function resetAll(){
+    idx = 0;
+    for(let i=0;i<answers.length;i++) answers[i]=null;
+    updateProgress();
+    $("code").value = "";
+    showOnly("gate");
+    shotWrap.classList.add("hidden");
+    window.scrollTo({top:0,behavior:"instant"});
+  }
+
+  // 截图生成：不下载，只生成图片
+  function generateShot(){
+    const node = $("resultCard");
+    html2canvas(node,{backgroundColor:null}).then(canvas=>{
+      const img = $("shotImg");
+      img.src = canvas.toDataURL("image/png");
+      shotWrap.classList.remove("hidden");
+      window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
+    }).catch(()=>alert("截图失败，可以稍后重试一次。"));
+  }
+
+  // 事件绑定
+  $("unlock").onclick = () => {
+    const v = ($("code").value || "").trim();
+    if(v !== TODAY_CODE){
+      alert("口令不对。请回小红书订单自动回复里确认一下。");
+      return;
+    }
+    idx = 0;
+    for(let i=0;i<answers.length;i++) answers[i]=null;
+    updateProgress();
+    showOnly("quiz");
+    renderQuestion();
+    window.scrollTo({top:0,behavior:"instant"});
+  };
+
+  $("shotBtn").onclick = generateShot;
+  $("againBtn").onclick = resetAll;
+
+  // 初始进度
+  updateProgress();
 </script>
 </body>
 </html>
