@@ -4,7 +4,8 @@
   <meta charset="utf-8" />
   <title>2026 钱味觉醒测试｜完整版</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <script src="https://cdn.bootcdn.net/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <!-- 截图用 -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     :root{
       --bg:#050612;
@@ -20,7 +21,7 @@
       --max:960px;
     }
     *{box-sizing:border-box}
-    html,body{height:100%;-webkit-tap-highlight-color:transparent}
+    html,body{height:100%}
     body{
       margin:0;
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"PingFang SC","Microsoft YaHei",sans-serif;
@@ -36,238 +37,860 @@
     .hidden{display:none !important}
 
     .hero,.card{
-      border:1px solid var(--bd);border-radius:22px;padding:16px;
-      box-shadow:var(--shadow);backdrop-filter:blur(10px);
+      border:1px solid var(--bd);
+      border-radius:22px;
+      padding:16px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
     }
-    .hero{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(11,16,40,.95));margin-bottom:14px}
-    .card{background:linear-gradient(180deg, var(--glass2), var(--glass));margin-top:12px}
+    .hero{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(11,16,40,.95));
+      margin-bottom:14px;
+    }
+    .card{
+      background:linear-gradient(180deg, var(--glass2), var(--glass));
+      margin-top:12px;
+    }
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
     .space{justify-content:space-between}
     h1{margin:0 0 6px;font-size:18px;letter-spacing:.2px}
     .sub{margin:0;color:var(--sub);font-size:13px;line-height:1.7}
     .pill{
-      display:inline-flex;align-items:center;gap:8px;padding:7px 12px;
-      border-radius:999px;border:1px solid var(--bd);
-      background:rgba(255,255,255,.04);font-size:12px;color:var(--sub);
+      display:inline-flex;align-items:center;gap:8px;
+      padding:7px 12px;border-radius:999px;
+      border:1px solid var(--bd);
+      background:rgba(255,255,255,.04);
+      font-size:12px;color:var(--sub);
     }
 
     input{
-      width:min(420px,100%);border:1px solid rgba(255,255,255,.2);
-      background:rgba(6,9,26,.9);color:var(--tx);border-radius:16px;
-      padding:11px 12px;font-size:14px;outline:none;
+      width:min(420px,100%);
+      border:1px solid rgba(255,255,255,.2);
+      background:rgba(6,9,26,.9);
+      color:var(--tx);
+      border-radius:16px;
+      padding:11px 12px;
+      font-size:14px;
+      outline:none;
     }
+    input::placeholder{color:#8f9abd}
+
     button{
-      border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);
-      color:var(--tx);border-radius:16px;padding:9px 13px;font-weight:700;
-      cursor:pointer;font-size:13px;transition: 0.2s;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06);
+      color:var(--tx);
+      border-radius:16px;
+      padding:9px 13px;
+      font-weight:700;
+      cursor:pointer;
+      font-size:13px;
     }
-    button.primary{border-color:transparent;background:linear-gradient(90deg, var(--accent), var(--accent2))}
-    button:active{transform: scale(0.96)}
+    button.primary{
+      border-color:transparent;
+      background:linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+    button:disabled{opacity:.5;cursor:not-allowed}
 
-    /* 进度条 */
     .progressWrap{margin-top:10px}
-    .bar{height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
-    .fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent3),#60a5fa,var(--accent));transition:0.3s}
-    .ptext{margin-top:8px;color:var(--sub);font-size:11px}
-
-    /* 问题区域 */
-    .qindex{color:var(--accent);font-size:12px;font-weight:700;margin-bottom:4px}
-    .qtitle{margin:0 0 16px;font-size:16px;font-weight:900;line-height:1.5}
-    .opts{display:grid;gap:12px}
-    label.opt{
-      display:block;cursor:pointer;border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.03);border-radius:18px;padding:12px;
+    .bar{
+      height:10px;border-radius:999px;background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);overflow:hidden;
     }
-    .inner{display:flex;gap:12px;align-items:center}
+    .fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent3),#60a5fa,var(--accent))}
+    .ptext{margin-top:8px;color:var(--sub);font-size:12px}
+
+    .mini{color:var(--sub);font-size:12px;line-height:1.6}
+    .divider{height:1px;background:rgba(255,255,255,.12);margin:12px 0}
+    .navRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+    /* 问题 */
+    .qindex{color:#f9fafb;font-size:12px;font-weight:700;margin-bottom:4px;opacity:.9}
+    .qtitle{margin:0 0 10px;font-size:15px;font-weight:900;line-height:1.5}
+    .opts{display:grid;gap:10px}
+    label.opt{
+      display:block;cursor:pointer;
+      border:1px solid rgba(255,255,255,.16);
+      background:linear-gradient(180deg, rgba(34,40,80,.95), rgba(12,15,40,.96));
+      border-radius:18px;
+      padding:10px;
+      transition:transform .08s ease,border-color .12s ease,box-shadow .12s ease;
+    }
+    label.opt:hover{
+      transform:translateY(-1px);
+      border-color:rgba(255,255,255,.3);
+      box-shadow:0 10px 25px rgba(0,0,0,.45);
+    }
+    .inner{display:flex;gap:10px;align-items:flex-start}
     .k{
       display:inline-flex;align-items:center;justify-content:center;
-      width:30px;height:30px;border-radius:10px;
-      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);
-      font-weight:900;flex-shrink:0;
+      width:28px;height:28px;border-radius:11px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.2);
+      font-weight:900;flex:0 0 auto;
     }
+    .otxt{line-height:1.5;font-size:14px}
     input[type="radio"]{display:none}
-    input[type="radio"]:checked + .inner .k{background:var(--accent);border-color:transparent}
-    input[type="radio"]:checked + .inner .otxt{color:#fff;font-weight:700}
+    input[type="radio"]:checked + .inner{
+      outline:2px solid rgba(255,61,141,.7);
+      border-radius:12px;padding:6px;
+    }
 
-    /* 结果卡片 */
+    /* 结果 */
     .resultCard{
-      padding:20px;border-radius:24px;background:#050617;
-      border:1px solid rgba(255,255,255,.15);position:relative;overflow:hidden;
+      padding:16px;border-radius:22px;
+      background:
+        linear-gradient(135deg, rgba(255,61,141,.15), rgba(124,58,237,.18)),
+        #050617;
+      border:1px solid rgba(255,255,255,.18);
     }
-    .resultCard::before{
-        content:'';position:absolute;top:0;left:0;right:0;height:4px;
-        background:linear-gradient(90deg, var(--accent), var(--accent2));
-    }
-    .resHead{display:flex;gap:16px;align-items:center;margin-bottom:20px}
+    .resHead{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
     .avatar{
-      width:64px;height:64px;border-radius:20px;
-      background:linear-gradient(135deg,#ff3d8d,#7c3aed);
-      display:flex;align-items:center;justify-content:center;font-size:32px;
+      width:80px;height:80px;border-radius:26px;
+      background:#0b1020;
+      padding:6px;
+      box-shadow:0 16px 45px rgba(0,0,0,.7);
+      flex-shrink:0;
     }
-    .rtitle{font-size:20px;font-weight:900;color:#fff}
-    .raka{font-size:12px;color:var(--sub);margin-top:2px}
-    .resBody{font-size:14px;line-height:1.8;color:#d1d5db}
-    .resBody b{color:var(--accent);font-size:15px}
+    .chibi{
+      width:100%;height:100%;border-radius:22px;
+      background:radial-gradient(circle at 30% 0%, #fff, transparent 55%);
+      position:relative;overflow:hidden;
+    }
+    .chibi-face{
+      position:absolute;left:50%;top:46%;
+      width:58%;height:58%;
+      transform:translate(-50%,-50%);
+      background:#ffe7d6;
+      border-radius:45px;
+      box-shadow:0 4px 10px rgba(0,0,0,.35);
+    }
+    .eye{
+      position:absolute;top:38%;width:12px;height:16px;
+      border-radius:999px;
+      background:#111827;
+      box-shadow:0 0 0 2px rgba(0,0,0,.3);
+    }
+    .eye.left{left:32%}
+    .eye.right{right:32%}
+    .eye::after{
+      content:"";
+      position:absolute;top:3px;left:3px;
+      width:5px;height:5px;border-radius:999px;
+      background:rgba(255,255,255,.9);
+    }
+    .mouth{
+      position:absolute;left:50%;top:63%;
+      width:22px;height:12px;
+      border-radius:0 0 999px 999px;
+      border-bottom:3px solid #9f1239;
+      transform:translateX(-50%);
+    }
+    .blush{
+      position:absolute;top:56%;width:14px;height:8px;
+      border-radius:999px;
+      background:rgba(248,113,113,.55);
+      filter:blur(1px);
+    }
+    .blush.left{left:20%}
+    .blush.right{right:20%}
+    .hair{
+      position:absolute;left:50%;top:10%;
+      width:80%;height:50%;
+      transform:translateX(-50%);
+      border-radius:50px;
+    }
+    .badgeTag{
+      position:absolute;left:10px;bottom:10px;
+      padding:4px 8px;border-radius:999px;
+      font-size:10px;font-weight:700;
+      background:rgba(15,23,42,.8);
+      color:#e5e7eb;
+      border:1px solid rgba(148,163,184,.7);
+    }
+    .avatar-A .hair{background:linear-gradient(135deg,#f97316,#facc15);}
+    .avatar-B .hair{background:linear-gradient(135deg,#22c55e,#14b8a6);}
+    .avatar-C .hair{background:linear-gradient(135deg,#38bdf8,#6366f1);}
+    .avatar-D .hair{background:linear-gradient(135deg,#f472b6,#fb7185);}
 
-    /* 仪式感加载 */
+    .rMain{}
+    .rtype{font-size:13px;opacity:.85;margin-bottom:2px}
+    .rtitle{font-size:18px;font-weight:900}
+    .raka{font-size:12px;color:var(--sub)}
+
+    .resBody{margin-top:12px;font-size:13px;line-height:1.8;white-space:pre-wrap}
+    .resBody br{margin-bottom:4px}
+
+    .shotImg{width:100%;border-radius:18px;margin-top:10px;border:1px solid rgba(148,163,184,.5)}
+    .shotNote{font-size:12px;color:var(--sub);margin-top:4px}
+
+    /* 深度计算遮罩 */
     #loadingOverlay {
-      position:fixed;top:0;left:0;width:100%;height:100%;
-      background:rgba(5,6,18,0.95);backdrop-filter:blur(15px);
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      z-index:9999;transition:opacity 0.4s;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(5, 6, 18, 0.9); backdrop-filter: blur(15px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 9999; transition: opacity 0.4s;
     }
-    .spinner{
-      width:40px;height:40px;border:3px solid rgba(255,61,141,0.1);
-      border-top:3px solid var(--accent);border-radius:50%;
-      animation:spin 1s linear infinite;margin-bottom:20px;
+    .spinner {
+      width: 50px; height: 50px; border: 3px solid rgba(255, 61, 141, 0.2);
+      border-top: 3px solid var(--accent); border-radius: 50%;
+      animation: spin 1s linear infinite; margin-bottom: 20px;
     }
-    @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
-    .loadingText{font-size:13px;color:var(--sub);letter-spacing:1px}
-
-    .shotImg{width:100%;border-radius:18px;margin-top:14px;border:1px solid var(--bd)}
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .loadingText { font-size: 14px; color: var(--sub); letter-spacing: 1px; text-align:center; }
   </style>
 </head>
 
 <body>
 <div class="wrap">
+
+  <!-- 口令页 -->
   <section class="hero" id="gate">
     <div class="row space">
       <div>
-        <h1>2026 钱味觉醒测试</h1>
-        <p class="sub">帮你看清你脑子里的钱观，翻译成一句人话。</p>
+        <h1>2026 钱味觉醒测试｜完整版</h1>
+        <p class="sub">
+          20 道题，帮你看清：你到底是哪一种搞钱体质。<br>
+          不是算命，是把你脑子里那套钱观，翻译成一句人话。
+        </p>
       </div>
-      <div class="pill">20题完整版</div>
+      <div class="pill">20题｜约2分钟｜建议截图结果卡</div>
     </div>
-    <div class="row" style="margin-top:16px">
-      <input id="code" placeholder="输入神秘口令解锁" />
-      <button class="primary" id="unlock">开始觉醒</button>
-    </div>
-  </section>
 
-  <section class="card hidden" id="quizWrap">
+    <div class="row" style="margin-top:12px">
+      <input id="code" placeholder="输入神秘口令（下单后自动回复里）" />
+      <button class="primary" id="unlock">开始测试</button>
+      <button id="helpBtn">打不开？</button>
+    </div>
+
     <div class="progressWrap">
       <div class="bar"><div class="fill" id="fill"></div></div>
       <div class="ptext" id="ptext">进度：0 / 20</div>
     </div>
-    <div id="quiz" style="margin-top:20px"></div>
+
+    <p class="mini hidden" id="helpText" style="margin-top:8px">
+      如果页面进不去 / 一直白屏：<br>
+      1）先刷新一次页面<br>
+      2）换 Safari / Chrome 再试<br>
+      3）还不行：回小红书留言【打不开】，我会补发入口或新口令。
+    </p>
+
+    <p class="mini" style="margin-top:6px">
+      提示：口令错了会直接拦截；测试结果只保存在你自己设备里，建议测完立刻截图。
+    </p>
   </section>
 
+  <!-- 题目页 -->
+  <section class="card hidden" id="quiz"></section>
+
+  <!-- 结果页 -->
   <section class="card hidden" id="result">
     <div class="resultCard" id="resultCard"></div>
-    <div class="row" style="margin-top:20px;gap:12px">
-      <button class="primary" id="shotBtn">生成结果卡片</button>
-      <button id="againBtn">重新测试</button>
+
+    <div class="divider"></div>
+
+    <div class="row navRow">
+      <button class="primary" id="shotBtn">生成截图卡片</button>
+      <button id="againBtn">返回最开始重新测</button>
     </div>
-    <p class="sub" style="margin-top:12px;font-size:12px">↓ 生成后长按下方图片保存至相册</p>
-    <div id="shotWrap" class="hidden">
-      <img id="shotImg" class="shotImg" />
-    </div>
+    <p class="shotNote">
+      生成后，往下滑，长按图片即可保存 / 发小红书 / 朋友圈。
+    </p>
   </section>
+
+  <!-- 截图预览 -->
+  <section class="card hidden" id="shotWrap">
+    <p class="mini">↓ 已为你生成结果截图卡片</p>
+    <img id="shotImg" class="shotImg" alt="测试结果截图" />
+  </section>
+
 </div>
 
 <script>
-  // 口令简单混淆 (Base64 为 WAKEN2026)
-  const _0x1a2b = atob("V0FLRU4yMDI2");
+  // ====== 配置区 ======
+  const TODAY_CODE = "WAKEN2026"; // 神秘口令，可以随时改
 
   const QUESTIONS = [
-    { t:"你银行卡余额低于 4 位数时，你最真实的反应是？", o:{A:"立刻焦虑，开始算钱",B:"心想：还能再搏一把",C:"自责：我是不是不够厉害",D:"想找个人倾诉"}},
-    { t:"如果突然失业，你第一步会？", o:{A:"立刻削减开支",B:"找下一个更大的机会",C:"报个课，升级自己",D:"联系所有认识的人"}},
-    { t:"你更害怕哪种未来？", o:{A:"不稳定",B:"错过风口",C:"被淘汰",D:"单打独斗"}},
-    { t:"别人暴富，你心里最真实的一句是？", o:{A:"运气而已",B:"我也想赌一把",C:"他肯定有本事",D:"背后一定有人"}},
-    { t:"你做决定时最常卡住的点？", o:{A:"安不安全",B:"值不值得赌",C:"逻辑是不是对",D:"有没有队友"}},
-    { t:"你最容易在哪件事上花钱？", o:{A:"让生活更稳",B:"让自己爽",C:"提升能力",D:"维系关系"}},
-    { t:"你更讨厌被说成？", o:{A:"胆小",B:"冲动",C:"只会学习",B:"只会靠人"}},
-    { t:"如果机会和安全感冲突，你会？", o:{A:"选安全",B:"选机会",C:"研究更久",D:"拉人一起"}},
-    { t:"你更愿意用什么换钱？", o:{A:"时间",B:"运气",C:"技能",D:"人脉"}},
-    { t:"你最不甘心的是？", o:{A:"本来可以更稳",B:"本来可以更赚",C:"本来可以更强",D:"本来可以更多资源"}},
-    { t:"你更相信什么能改变命运？", o:{A:"规则",B:"时机",C:"能力",D:"关系"}},
-    { t:"你的人生最大焦虑是？", o:{A:"不够安全",B:"不够成功",C:"不够优秀",D:"不够有后台"}},
-    { t:"当收入下降，你更容易？", o:{A:"收缩",B:"加码",C:"复盘",D:"求助"}},
-    { t:"你对“稳定”的态度是？", o:{A:"必须",B:"无聊",C:"基础",D:"可以共享"}},
-    { t:"你最羡慕哪种人？", o:{A:"钱多又稳",B:"一夜翻身",C:"实力碾压",D:"背景强大"}},
-    { t:"你更怕什么？", o:{A:"亏钱",B:"错过",C:"退步",D:"没人撑"}},
-    { t:"你最常安慰自己的一句话是？", o:{A:"稳一点就好",B:"下次一定行",C:"我再准备一下",D:"我去找人问问"}},
-    { t:"你的人生更像？", o:{A:"打地基",B:"抢跑道",C:"升级打怪",D:"组队通关"}},
-    { t:"如果钱不是问题，你会优先提升？", o:{A:"安全垫",B:"速度",C:"能力",D:"圈子"}},
-    { t:"最后一题，你内心最真实的渴望是？", o:{A:"安心",B:"翻盘",C:"强大",D:"有人撑腰"}}
+    { t:"你银行卡余额低于 4 位数时，你最真实的反应是？", o:{
+      A:"立刻焦虑，开始算钱",
+      B:"心想：还能再搏一把",
+      C:"自责：我是不是不够厉害",
+      D:"想找个人倾诉"
+    }},
+    { t:"如果突然失业，你第一步会？", o:{
+      A:"立刻削减开支",
+      B:"找下一个更大的机会",
+      C:"报个课，升级自己",
+      D:"联系所有认识的人"
+    }},
+    { t:"你更害怕哪种未来？", o:{
+      A:"不稳定",
+      B:"错过风口",
+      C:"被淘汰",
+      D:"单打独斗"
+    }},
+    { t:"别人暴富，你心里最真实的一句是？", o:{
+      A:"运气而已",
+      B:"我也想赌一把",
+      C:"他肯定有本事",
+      D:"背后一定有人"
+    }},
+    { t:"你做决定时最常卡住的点？", o:{
+      A:"安不安全",
+      B:"值不值得赌",
+      C:"逻辑是不是对",
+      D:"有没有队友"
+    }},
+    { t:"你最容易在哪件事上花钱？", o:{
+      A:"让生活更稳",
+      B:"让自己爽",
+      C:"提升能力",
+      D:"维系关系"
+    }},
+    { t:"你更讨厌被说成？", o:{
+      A:"胆小",
+      B:"冲动",
+      C:"只会学习",
+      D:"只会靠人"
+    }},
+    { t:"如果机会和安全感冲突，你会？", o:{
+      A:"选安全",
+      B:"选机会",
+      C:"研究更久",
+      D:"拉人一起"
+    }},
+    { t:"你更愿意用什么换钱？", o:{
+      A:"时间",
+      B:"运气",
+      C:"技能",
+      D:"人脉"
+    }},
+    { t:"你最不甘心的是？", o:{
+      A:"本来可以更稳",
+      B:"本来可以更赚",
+      C:"本来可以更强",
+      D:"本来可以更多资源"
+    }},
+    { t:"你更相信什么能改变命运？", o:{
+      A:"规则",
+      B:"时机",
+      C:"能力",
+      D:"关系"
+    }},
+    { t:"你的人生最大焦虑是？", o:{
+      A:"不够安全",
+      B:"不够成功",
+      C:"不够优秀",
+      D:"不够有后台"
+    }},
+    { t:"当收入下降，你更容易？", o:{
+      A:"收缩",
+      B:"加码",
+      C:"复盘",
+      D:"求助"
+    }},
+    { t:"你对“稳定”的态度是？", o:{
+      A:"必须",
+      B:"无聊",
+      C:"基础",
+      D:"可以共享"
+    }},
+    { t:"你最羡慕哪种人？", o:{
+      A:"钱多又稳",
+      B:"一夜翻身",
+      C:"实力碾压",
+      D:"背景强大"
+    }},
+    { t:"你更怕什么？", o:{
+      A:"亏钱",
+      B:"错过",
+      C:"退步",
+      D:"没人撑"
+    }},
+    { t:"你最常安慰自己的一句话是？", o:{
+      A:"稳一点就好",
+      B:"下次一定行",
+      C:"我再准备一下",
+      D:"我去找人问问"
+    }},
+    { t:"你的人生更像？", o:{
+      A:"打地基",
+      B:"抢跑道",
+      C:"升级打怪",
+      D:"组队通关"
+    }},
+    { t:"如果钱不是问题，你会优先提升？", o:{
+      A:"安全垫",
+      B:"速度",
+      C:"能力",
+      D:"圈子"
+    }},
+    { t:"最后一题，你内心最真实的渴望是？", o:{
+      A:"安心",
+      B:"翻盘",
+      C:"强大",
+      D:"有人撑腰"
+    }}
   ];
 
   const TYPES = {
-    A:{ emoji:"💰", title:"安稳守财型 · 升级版", aka:"你不是稳，是害怕失控。", body:"<b>金钱阴影：</b>你最大的损失，往往不是亏钱，而是——在观望里，把时间让给了更激进的人。<br><br><b>2026关键点：</b>给自己一个“允许小失败”的额度。否则你永远只会站在起跑线。<br><br><b>互联网嘴替：</b>你不会最快，但你几乎不会退场。" },
-    B:{ emoji:"⚡", title:"机敏逐利型 · 升级版", aka:"你不缺机会，你缺刹车。", body:"<b>金钱阴影：</b>你输的不是判断力，是节制力。<br><br><b>2026关键点：</b>只要你学会“什么时候停”，你会比大多数人走得远。<br><br><b>互联网嘴替：</b>你这辈子不会没机会，你只怕自己停不下来。" },
-    C:{ emoji:"📚", title:"深耕成长型 · 升级版", aka:"你其实比别人更强，但你不敢承认。", body:"<b>金钱阴影：</b>你拖延的不是成长，是曝光。<br><br><b>2026关键点：</b>停止准备，开始出售。<br><br><b>互联网嘴替：</b>你迟早会贵，问题是，你什么时候开口要价。" },
-    D:{ emoji:"🤝", title:"人脉联结型 · 升级版", aka:"你很会成全别人，但不一定会成全自己。", body:"<b>金钱阴影：</b>如果规则不写清，最后买单的人常常是你。<br><br><b>2026关键点：</b>学会谈钱，你的贵人运才会真正变现。<br><br><b>互联网嘴替：</b>你不适合躺赢，你适合带人赢。" }
+    A:{
+      tag:"A",
+      title:"🅰 人间稳妥小财神",
+      aka:"（AKA：活到决赛圈型选手）",
+      badge:"安稳守财型",
+      body:`你的财富人设
+
+别人研究流量密码，你研究安全边际。
+别人上头冲刺，你在算退路。
+
+你不是不想暴富。
+你只是太清楚——翻车有多疼。
+
+你的人生关键词不是“躺赢”。
+是“别崩”。
+
+⸻
+
+你的隐藏设定
+
+✔ 抗风险能力 MAX
+✔ 情绪稳定天赋
+✔ 余额低于某条线会自动焦虑
+
+你是那种——
+别人爆仓时还能睡觉的人。
+
+⸻
+
+你的金钱盲区
+
+你最大的损失，往往不是亏钱。
+是“再等等”。
+
+你等趋势确认。
+趋势等你确认吗？
+
+⸻
+
+2026 升级副本
+
+给自己一个“可翻车额度”。
+
+别把 100% 都锁在安全感里。
+20% 用来试错，
+你会发现你没想象中那么脆。
+
+⸻
+
+互联网版一句话
+
+你不会最快。
+但你几乎不会退场。
+
+⸻
+
+👉 稳妥小财神集合。
+评论区看看我们是不是最后活下来的那批人。`
+    },
+    B:{
+      tag:"B",
+      title:"🅱 天生机会捕捉者",
+      aka:"（AKA：风口冲浪选手）",
+      badge:"机会驱动型",
+      body:`你的财富人设
+
+你对“可能翻倍”有天线。
+流量一动，你就感应到了。
+
+你的人生是快节奏剪辑版。
+稳一点？对你来说是 torture。
+
+⸻
+
+你的隐藏设定
+
+✔ 行动力爆炸
+✔ 敢尝试
+✔ 不甘心当旁观者
+
+别人还在观望，
+你已经试过三次。
+
+⸻
+
+你的金钱盲区
+
+你输的不是判断。
+是——不肯收手。
+
+赚的时候像爽文主角。
+回撤的时候像反派觉醒。
+
+⸻
+
+2026 升级副本
+
+所有进场，都写退出。
+
+你不需要变稳。
+你需要一个“自动刹车系统”。
+
+⸻
+
+互联网版一句话
+
+你这辈子不会没机会。
+你只怕自己停不下来。
+
+⸻
+
+👉 冲浪选手集合。
+是不是每次都“差一点就翻倍”？`
+    },
+    C:{
+      tag:"C",
+      title:"🅲 自我增值天花板",
+      aka:"（AKA：升级流主角）",
+      badge:"深耕成长型",
+      body:`你的财富人设
+
+别人追热点，你打磨自己。
+别人研究躺赢，你研究长期复利。
+
+你的人生像 RPG。
+等级慢慢升，突然一波质变。
+
+⸻
+
+你的隐藏设定
+
+✔ 学习力拉满
+✔ 复盘能力强
+✔ 自我要求极高
+
+你是那种——
+别人三年变一次，你一年升级三次。
+
+⸻
+
+你的金钱盲区
+
+你最大的问题不是不够强。
+是——不敢定价。
+
+你学得飞快。
+但变现慢半拍。
+
+⸻
+
+2026 升级副本
+
+每个月必须有一个“可卖成果”。
+
+停止准备。
+上线自己。
+
+⸻
+
+互联网版一句话
+
+你迟早会贵。
+问题是，你什么时候开口要价。
+
+⸻
+
+👉 升级流主角集合。
+是不是永远觉得自己“还不够好”？`
+    },
+    D:{
+      tag:"D",
+      title:"🅳 团队粘合剂",
+      aka:"（AKA：搞钱搭子体质）",
+      badge:"人脉联结型",
+      body:`你的财富人设
+
+你不爱单刷。
+你爱组队。
+
+你天生自带搞钱搭子磁场。
+走到哪都有人愿意和你一起干。
+
+⸻
+
+你的隐藏设定
+
+✔ 资源整合能力强
+✔ 懂共情
+✔ 会撮合
+
+别人单刷副本。
+你开团。
+
+⸻
+
+你的金钱盲区
+
+你太讲情分。
+不太讲利益。
+
+规则不写清，
+最后你收尾。
+
+⸻
+
+2026 升级副本
+
+所有合作写清三件事：
+
+分工
+产出
+分成
+
+你不缺人脉。
+你缺边界。
+
+⸻
+
+互联网版一句话
+
+你不适合躺赢。
+你适合带人赢。
+
+⸻
+
+👉 搞钱搭子集合。
+你是不是也很难单打独斗？`
+    }
   };
 
+  // DOM
   const $ = id => document.getElementById(id);
-  let idx = 0; const answers = Array(20).fill(null);
+  const gate = $("gate");
+  const quiz = $("quiz");
+  const result = $("result");
+  const shotWrap = $("shotWrap");
+  const fill = $("fill");
+  const ptext = $("ptext");
 
-  $("unlock").onclick = () => {
-    if($("code").value.trim() !== _0x1a2b) return alert("口令错误");
-    $("gate").classList.add("hidden");
-    $("quizWrap").classList.remove("hidden");
-    render();
-  };
+  let idx = 0;
+  const answers = Array(QUESTIONS.length).fill(null); // 存 A/B/C/D
 
-  function render(){
-    const q = QUESTIONS[idx];
-    $("quiz").innerHTML = `
-      <div class="qindex">QUESTION ${idx+1}/20</div>
-      <div class="qtitle">${q.t}</div>
-      <div class="opts">${["A","B","C","D"].map(k=>`
-        <label class="opt">
-          <input type="radio" name="q" value="${k}" ${answers[idx]===k?'checked':''}>
-          <div class="inner"><div class="k">${k}</div><div class="otxt">${q.o[k]}</div></div>
-        </label>`).join('')}
-      </div>
-    `;
-    $("quiz").querySelectorAll('input').forEach(i=>i.onchange=e=>{
-      answers[idx]=e.target.value;
-      setTimeout(()=>{
-        if(idx<19){ idx++; render(); updateProgress(); }
-        else { showResult(); }
-      },200);
-    });
-    updateProgress();
-    window.scrollTo(0,0);
+  function showOnly(which){
+    gate.classList.add("hidden");
+    quiz.classList.add("hidden");
+    result.classList.add("hidden");
+    if(which==="gate") gate.classList.remove("hidden");
+    if(which==="quiz") quiz.classList.remove("hidden");
+    if(which==="result") result.classList.remove("hidden");
   }
 
   function updateProgress(){
-    const done = answers.filter(x=>x).length;
-    $("fill").style.width = (done/20*100)+'%';
-    $("ptext").textContent = `深度画像扫描进度：${Math.round(done/20*100)}%`;
+    const done = answers.filter(x=>x!==null).length;
+    ptext.textContent = `进度：${done} / ${QUESTIONS.length}`;
+    fill.style.width = `${Math.round(done/QUESTIONS.length*100)}%`;
   }
 
-  function showResult(){
-    const ov = document.createElement('div'); ov.id='loadingOverlay';
-    ov.innerHTML = `<div class="spinner"></div><div class="loadingText" id="ls">正在同步 2026 财年数据...</div>`;
-    document.body.appendChild(ov);
-    
-    const ss = ["正在扫描金钱阴影...","正在计算增长模型...","画像导出中..."];
-    let si = 0; const itv = setInterval(()=>{ if(si<ss.length)$("ls").textContent=ss[si++]; },600);
+  function renderQuestion(){
+    const q = QUESTIONS[idx];
+    const letters = ["A","B","C","D"];
+    quiz.innerHTML = `
+      <div>
+        <div class="qindex">第 ${idx+1} 题 / ${QUESTIONS.length}</div>
+        <p class="qtitle">${q.t}</p>
+        <div class="opts">
+          ${letters.map(k=>`
+            <label class="opt">
+              <input type="radio" name="q${idx}" value="${k}">
+              <div class="inner">
+                <div class="k">${k}</div>
+                <div class="otxt">${q.o[k]}</div>
+              </div>
+            </label>
+          `).join("")}
+        </div>
+        <div class="navRow">
+          <button id="prevBtn">上一题</button>
+          <button id="nextBtn">下一题</button>
+          <button id="backBtn">返回最开始</button>
+        </div>
+        <p class="mini" style="margin-top:6px">提示：点选选项会自动跳到下一题，想回头改可以用「上一题」。</p>
+      </div>
+    `;
 
-    setTimeout(()=>{
-      clearInterval(itv);
-      const counts = {A:0,B:0,C:0,D:0}; answers.forEach(a=>counts[a]++);
-      const type = Object.entries(counts).sort((a,b)=>b[1]-a[1] || "CDAB".indexOf(a[0])-"CDAB".indexOf(b[0]))[0][0];
-      const t = TYPES[type];
-      $("resultCard").innerHTML = `
-        <div class="resHead"><div class="avatar">${t.emoji}</div>
-        <div><div class="rtype">2026 钱味画像</div><div class="rtitle">${t.title}</div><div class="raka">${t.aka}</div></div></div>
-        <div class="resBody">${t.body}</div>`;
-      $("quizWrap").classList.add("hidden"); $("result").classList.remove("hidden");
-      ov.style.opacity='0'; setTimeout(()=>ov.remove(),400); window.scrollTo(0,0);
-    },2200);
-  }
+    // 恢复已选
+    if(answers[idx]){
+      const v = answers[idx];
+      const input = quiz.querySelector(`input[value="${v}"]`);
+      if(input) input.checked = true;
+    }
 
-  $("shotBtn").onclick = () => {
-    html2canvas($("resultCard"),{backgroundColor:"#050617",scale:2}).then(cvs=>{
-      $("shotImg").src = cvs.toDataURL("image/png");
-      $("shotWrap").classList.remove("hidden");
-      window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+    // 选项监听：自动下一题 / 出结果
+    quiz.querySelectorAll(`input[name="q${idx}"]`).forEach(r=>{
+      r.addEventListener("change", e=>{
+        const v = e.target.value;
+        answers[idx] = v;
+        updateProgress();
+        if(idx === QUESTIONS.length - 1){
+          showResult();
+        }else{
+          idx++;
+          renderQuestion();
+          window.scrollTo({top:0,behavior:"instant"});
+        }
+      });
     });
+
+    // 导航按钮
+    $("prevBtn").onclick = () => {
+      if(idx>0){
+        idx--;
+        renderQuestion();
+        window.scrollTo({top:0,behavior:"instant"});
+      }
+    };
+    $("nextBtn").onclick = () => {
+      if(idx < QUESTIONS.length - 1){
+        idx++;
+        renderQuestion();
+        window.scrollTo({top:0,behavior:"instant"});
+      }else{
+        if(answers.every(x=>x!==null)) showResult();
+        else alert("还有题没选完哦，可以直接点选选项自动跳题。");
+      }
+    };
+    $("backBtn").onclick = resetAll;
+  }
+
+  function computeType(){
+    const score = {A:0,B:0,C:0,D:0};
+    answers.forEach(a=>{ if(a) score[a]++; });
+    const priority = {C:4,D:3,A:2,B:1}; // 打平优先
+    const sorted = Object.entries(score).sort((x,y)=>{
+      if(y[1]!==x[1]) return y[1]-x[1];
+      return priority[y[0]] - priority[x[0]];
+    });
+    return sorted[0][0]; // A/B/C/D
+  }
+
+  function avatarHTML(type){
+    const t = TYPES[type];
+    return `
+      <div class="avatar avatar-${type}">
+        <div class="chibi">
+          <div class="hair"></div>
+          <div class="chibi-face">
+            <div class="eye left"></div>
+            <div class="eye right"></div>
+            <div class="blush left"></div>
+            <div class="blush right"></div>
+            <div class="mouth"></div>
+          </div>
+          <div class="badgeTag">${t.badge}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ====== 结果页：带“计算中”遮罩 ======
+  function showResult() {
+    // 创建并显示加载遮罩
+    const overlay = document.createElement('div');
+    overlay.id = 'loadingOverlay';
+    overlay.innerHTML = `
+      <div class="spinner"></div>
+      <div class="loadingText" id="loadStatus">正在同步 2026 财年宏观数据...</div>
+    `;
+    document.body.appendChild(overlay);
+
+    // 文案跳动
+    const statuses = [
+      "正在扫描你的搞钱潜意识...",
+      "正在比对 48 组金钱阴影模型...",
+      "正在生成 2026 专属行动建议...",
+      "画像已就绪，正在导出卡片..."
+    ];
+    let sIdx = 0;
+    const statusInterval = setInterval(() => {
+      if(sIdx < statuses.length) {
+        const el = document.getElementById('loadStatus');
+        if(el) el.textContent = statuses[sIdx];
+        sIdx++;
+      }
+    }, 600);
+
+    // 2.5 秒后真正渲染结果
+    setTimeout(() => {
+      clearInterval(statusInterval);
+
+      const type = computeType();
+      const t = TYPES[type];
+
+      $("resultCard").innerHTML = `
+        <div class="resHead">
+          ${avatarHTML(type)}
+          <div class="rMain">
+            <div class="rtype">你的搞钱体质类型</div>
+            <div class="rtitle">${t.title}</div>
+            <div class="raka">${t.aka}</div>
+          </div>
+        </div>
+        <div class="resBody">${t.body.replace(/\n/g,"<br>")}</div>
+      `;
+
+      showOnly("result");
+      shotWrap.classList.add("hidden");
+
+      overlay.style.opacity = '0';
+      setTimeout(() => overlay.remove(), 400);
+      window.scrollTo({top: 0, behavior: "smooth"});
+    }, 2500); // 2.5秒：有仪式感又不至于烦
+  }
+
+  function resetAll(){
+    idx = 0;
+    for(let i=0;i<answers.length;i++) answers[i]=null;
+    updateProgress();
+    $("code").value = "";
+    showOnly("gate");
+    shotWrap.classList.add("hidden");
+    window.scrollTo({top:0,behavior:"instant"});
+  }
+
+  // 截图生成：不下载，只显示在页面
+  function generateShot(){
+    const node = $("resultCard");
+    html2canvas(node,{backgroundColor:null}).then(canvas=>{
+      const img = $("shotImg");
+      img.src = canvas.toDataURL("image/png");
+      shotWrap.classList.remove("hidden");
+      window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
+    }).catch(()=>alert("截图失败，可以稍后重试一次。"));
+  }
+
+  // 事件绑定
+  $("unlock").onclick = () => {
+    const v = ($("code").value || "").trim();
+    if(v !== TODAY_CODE){
+      alert("口令不对。请回小红书订单自动回复里确认一下。");
+      return;
+    }
+    idx = 0;
+    for(let i=0;i<answers.length;i++) answers[i]=null;
+    updateProgress();
+    showOnly("quiz");
+    renderQuestion();
+    window.scrollTo({top:0,behavior:"instant"});
   };
-  $("againBtn").onclick = () => location.reload();
+
+  $("helpBtn").onclick = () => {
+    $("helpText").classList.toggle("hidden");
+  };
+
+  $("shotBtn").onclick = generateShot;
+  $("againBtn").onclick = resetAll;
+
+  // 初始进度
+  updateProgress();
 </script>
 </body>
 </html>
