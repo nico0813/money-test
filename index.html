@@ -6,16 +6,22 @@
   <title>2026 钱味觉醒测试｜完整版</title>
   <style>
     :root{
-      --bg0:#070a14;
-      --card:rgba(255,255,255,.06);
+      --bg:#050610;
+      --tx:#EAF0FF;
+      --sub:#AAB3CF;
       --bd:rgba(255,255,255,.14);
-      --tx:#e5e7eb;
-      --sub:#a7b0c0;
-      --accent:#7c3aed;
-      --accent2:#22c55e;
-      --warn:#f59e0b;
-      --max:920px;
+      --glass:rgba(255,255,255,.07);
+      --glass2:rgba(255,255,255,.04);
+      --shadow: 0 14px 60px rgba(0,0,0,.45);
+      --max:980px;
+
+      --a:#7C3AED; /* 紫 */
+      --b:#FF3D8D; /* 粉 */
+      --c:#22C55E; /* 绿 */
+      --d:#60A5FA; /* 蓝 */
+      --y:#F59E0B; /* 黄 */
     }
+
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
@@ -23,119 +29,157 @@
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"PingFang SC","Microsoft YaHei",sans-serif;
       color:var(--tx);
       background:
-        radial-gradient(900px 600px at 15% 10%, rgba(124,58,237,.25), transparent 55%),
-        radial-gradient(900px 600px at 85% 30%, rgba(34,197,94,.18), transparent 55%),
-        radial-gradient(700px 500px at 70% 85%, rgba(96,165,250,.18), transparent 55%),
-        var(--bg0);
-      padding:16px 12px 44px;
+        radial-gradient(900px 600px at 12% 10%, rgba(255,61,141,.25), transparent 60%),
+        radial-gradient(900px 600px at 88% 25%, rgba(124,58,237,.26), transparent 60%),
+        radial-gradient(900px 600px at 68% 90%, rgba(34,197,94,.18), transparent 60%),
+        radial-gradient(800px 520px at 35% 70%, rgba(96,165,250,.18), transparent 55%),
+        var(--bg);
+      padding:16px 12px 48px;
     }
+
     .wrap{max-width:var(--max);margin:0 auto}
+    .hidden{display:none !important}
+
     .hero{
       border:1px solid var(--bd);
-      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
-      border-radius:18px;
-      padding:14px;
+      background:linear-gradient(180deg, var(--glass), var(--glass2));
+      border-radius:22px;
+      padding:16px;
+      box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
     }
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .space{justify-content:space-between}
     h1{margin:0 0 6px;font-size:18px;letter-spacing:.2px}
-    .sub{margin:0;color:var(--sub);font-size:13px;line-height:1.6}
+    .sub{margin:0;color:var(--sub);font-size:13px;line-height:1.65}
     .pill{
       display:inline-flex;align-items:center;gap:8px;
-      padding:6px 10px;border-radius:999px;border:1px solid var(--bd);
-      background:rgba(255,255,255,.04);
+      padding:7px 12px;border-radius:999px;border:1px solid var(--bd);
+      background:rgba(255,255,255,.05);
       font-size:12px;color:var(--sub);
       user-select:none;
     }
+
     .card{
       margin-top:12px;
       border:1px solid var(--bd);
-      background:rgba(255,255,255,.04);
-      border-radius:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius:22px;
       padding:14px;
+      box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
     }
-    .hidden{display:none}
+
     input{
       width:min(420px, 100%);
-      border:1px solid var(--bd);
-      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(0,0,0,.18);
       color:var(--tx);
-      border-radius:14px;
+      border-radius:16px;
       padding:12px 12px;
       font-size:14px;
       outline:none;
     }
-    input::placeholder{color:#97a3b8}
+    input::placeholder{color:#97A3B8}
+
     button{
-      border:1px solid var(--bd);
-      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06);
       color:var(--tx);
-      border-radius:14px;
+      border-radius:16px;
       padding:12px 14px;
-      font-weight:900;
+      font-weight:1000;
       cursor:pointer;
     }
     button.primary{
-      background:linear-gradient(90deg, var(--accent), #2563eb);
       border-color:transparent;
+      background:linear-gradient(90deg, var(--b), var(--a), var(--d));
+    }
+    button.secondary{
+      border-color:transparent;
+      background:linear-gradient(90deg, rgba(245,158,11,.9), rgba(255,61,141,.75));
     }
     button:disabled{opacity:.5;cursor:not-allowed}
+
     .progressWrap{margin-top:10px}
     .bar{
       height:10px;border-radius:999px;background:rgba(255,255,255,.08);
-      border:1px solid var(--bd);overflow:hidden;
+      border:1px solid rgba(255,255,255,.14);overflow:hidden;
     }
-    .fill{height:100%;width:0%;background:linear-gradient(90deg, #22c55e, #60a5fa, #a78bfa)}
+    .fill{height:100%;width:0%;background:linear-gradient(90deg, var(--c), var(--d), var(--a), var(--b))}
     .ptext{margin-top:8px;color:var(--sub);font-size:12px}
 
-    .qtitle{margin:0 0 10px;font-size:15px;font-weight:1000;line-height:1.35}
+    .divider{height:1px;background:rgba(255,255,255,.12);margin:12px 0}
+
+    /* Quiz */
+    .qtitle{margin:0 0 10px;font-size:15px;font-weight:1100;line-height:1.4}
+    .mini{color:var(--sub);font-size:12px;line-height:1.6}
     .opts{display:grid;gap:10px}
     label.opt{
       display:block;cursor:pointer;
       border:1px solid rgba(255,255,255,.16);
       background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-      border-radius:16px;
+      border-radius:18px;
       padding:12px;
       transition:transform .08s ease, border-color .12s ease;
     }
-    label.opt:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.26)}
+    label.opt:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.28)}
     .k{
       display:inline-flex;align-items:center;justify-content:center;
-      width:28px;height:28px;border-radius:10px;
-      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);
-      font-weight:1000;margin-right:10px;flex:0 0 auto;
+      width:30px;height:30px;border-radius:11px;
+      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
+      font-weight:1100;flex:0 0 auto;
     }
+    .inner{display:flex;gap:10px;align-items:flex-start}
+    .otxt{line-height:1.45;font-size:14px}
     input[type="radio"]{display:none}
     input[type="radio"]:checked + .inner{
-      outline:2px solid rgba(124,58,237,.55);
+      outline:2px solid rgba(255,61,141,.55);
       border-radius:12px;padding:6px;
     }
-    .inner{display:flex;align-items:flex-start;gap:8px}
-    .otxt{line-height:1.45;font-size:14px}
 
     .navRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    .mini{color:var(--sub);font-size:12px;line-height:1.6}
-    .divider{height:1px;background:rgba(255,255,255,.12);margin:12px 0}
 
+    /* Result */
     .resultCard{
-      padding:14px;border-radius:18px;border:1px solid rgba(255,255,255,.18);
-      background:linear-gradient(135deg, rgba(124,58,237,.24), rgba(34,197,94,.16), rgba(96,165,250,.16));
+      padding:14px;border-radius:22px;border:1px solid rgba(255,255,255,.18);
+      background:
+        radial-gradient(600px 420px at 20% 20%, rgba(255,61,141,.24), transparent 60%),
+        radial-gradient(620px 420px at 80% 30%, rgba(124,58,237,.22), transparent 60%),
+        radial-gradient(640px 420px at 60% 90%, rgba(96,165,250,.18), transparent 60%),
+        rgba(255,255,255,.04);
     }
     .badge{
-      display:inline-block;padding:6px 12px;border-radius:999px;
+      display:inline-block;padding:7px 12px;border-radius:999px;
       border:1px solid rgba(255,255,255,.18);
       background:rgba(255,255,255,.06);
-      font-size:12px;font-weight:1000;
+      font-size:12px;font-weight:1100;
     }
-    .big{font-size:22px;font-weight:1100;margin:6px 0 6px}
-    .one{font-weight:900;line-height:1.5}
-    .list{font-size:13px;line-height:1.75;color:#d9e0ee}
+    .big{font-size:22px;font-weight:1200;margin:8px 0 6px}
+    .one{font-weight:1000;line-height:1.55}
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:12px;
+      align-items:stretch;
+    }
+    @media (max-width: 720px){
+      .grid{grid-template-columns:1fr}
+    }
+    .box{
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.18);
+      border-radius:18px;
+      padding:12px;
+    }
+    .h3{margin:0 0 8px;font-size:13px;font-weight:1100;color:#EAF0FF}
+    .list{font-size:13px;line-height:1.75;color:#DDE6FF}
     .share{
       white-space:pre-wrap;
-      background:#070a14;border:1px solid rgba(255,255,255,.14);
-      padding:12px;border-radius:14px;
-      font-size:13px;line-height:1.55;color:#e5e7eb;
+      background:rgba(0,0,0,.25);
+      border:1px solid rgba(255,255,255,.14);
+      padding:12px;border-radius:16px;
+      font-size:13px;line-height:1.55;color:#EAF0FF;
     }
     .toast{
       position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
@@ -144,26 +188,29 @@
       opacity:0;pointer-events:none;transition:.18s;
     }
     .toast.show{opacity:1}
+    .warn{color:#FFD38A;font-weight:900}
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <section class="hero">
-      <div class="row" style="justify-content:space-between">
+
+    <!-- 1) Gate: only shows password -->
+    <section class="hero" id="gate">
+      <div class="row space">
         <div>
           <h1>2026 钱味觉醒测试｜完整版</h1>
           <p class="sub">
-            不是算命、不预测。只做「财富增长模式」画像 + 2026 行动清单。<br>
-            <b>20题</b>测完会生成一张“钱味卡片”，建议截图保存。
+            不是算命、不预测。就是一份<strong>“你适合怎么搞钱”的性格画像</strong>。<br>
+            测完会生成<strong>钱味卡片</strong>＋2026行动清单（建议截图）。
           </p>
         </div>
-        <div class="pill">⏱ 20题｜约2分钟｜可截图分享</div>
+        <div class="pill">⏱ 20题｜约2分钟｜更像MBTI</div>
       </div>
 
       <div class="row" style="margin-top:12px">
         <input id="code" placeholder="输入神秘口令（订单自动回复里）" />
-        <button class="primary" id="unlock">解锁进入测试</button>
+        <button class="primary" id="unlock">开始测我的钱味</button>
         <button id="help">打不开？</button>
       </div>
 
@@ -174,44 +221,55 @@
 
       <p class="mini hidden" id="helpText" style="margin-top:10px">
         解决方法：1) 刷新页面 2) 换 Safari/Chrome 3) 仍不行：回到小红书回复“打不开”，我会补发备用入口/口令。<br>
-        提示：口令建议 3 天一换。
+        <span class="warn">提示：</span>口令建议 3 天一换。
       </p>
     </section>
 
+    <!-- 2) Quiz: only shows questions -->
     <section class="card hidden" id="quiz"></section>
 
     <section class="card hidden" id="nav">
       <div class="navRow">
         <button id="prev">上一题</button>
         <button id="next" class="primary">下一题</button>
-        <button id="submit" class="primary hidden">出结果（钱味卡片）</button>
+        <button id="submit" class="secondary hidden">出结果（钱味卡片）</button>
         <button id="reset">重做</button>
       </div>
       <div class="mini" style="margin-top:10px">
-        小提示：按直觉选，别想太久（你越纠结越容易测不准）。
+        小红书测试潜规则：别纠结，按第一反应选，越纠结越测不准。
       </div>
     </section>
 
+    <!-- 3) Result: only shows result -->
     <section class="card hidden" id="result">
       <div class="resultCard" id="resultCard"></div>
 
       <div class="divider"></div>
 
-      <h3 style="margin:0 0 8px;font-size:14px">完整版报告（2026行动清单）</h3>
-      <div class="list" id="report"></div>
+      <div class="grid">
+        <div class="box">
+          <div class="h3">你的“钱味报告”（像MBTI那种）</div>
+          <div class="list" id="report"></div>
+        </div>
 
-      <div class="divider"></div>
-
-      <h3 style="margin:0 0 8px;font-size:14px">复制分享文案（发小红书/朋友圈）</h3>
-      <div class="share" id="share"></div>
-      <div class="navRow">
-        <button id="copy">复制文案</button>
+        <div class="box">
+          <div class="h3">一条就够的 2026 今日任务</div>
+          <div class="list" id="task"></div>
+          <div class="divider"></div>
+          <div class="h3">复制分享文案</div>
+          <div class="share" id="share"></div>
+          <div class="navRow">
+            <button id="copy">复制文案</button>
+            <button id="back" class="primary">再测一次</button>
+          </div>
+        </div>
       </div>
 
       <p class="mini" style="margin-top:10px">
-        免责声明：本测试仅作个人倾向分析，不构成投资/理财建议；不承诺任何收益或结果。
+        免责声明：仅作个人倾向分析，不构成投资/理财建议；不承诺任何收益或结果。
       </p>
     </section>
+
   </div>
 
   <div class="toast" id="toast">已复制 ✅</div>
@@ -220,79 +278,159 @@
   // ✅ 神秘口令（你随时改）
   const TODAY_CODE = "WAKEN2026";
 
-  // 20题，每题选 A/B/C/D 代表对应类型+1
+  // 题目：更具象、更小红书
+  // 每题选择 A/B/C/D = 对应类型 +1
   const QUESTIONS = [
-    {t:"Q1 你更舒服的赚钱方式？", o:{A:"稳稳积累：慢慢变大",B:"抓窗口：短期提速",C:"提升技能：同样时间赚更多",D:"靠合作：资源放大"}},
-    {t:"Q2 面对亏损你第一反应？", o:{A:"先保命：不想再亏",B:"能扛波动：接受波动成本",C:"复盘原因：改方法",D:"找人/分散：降低单点风险"}},
-    {t:"Q3 你最愿意把时间花在？", o:{A:"预算/记账/系统化",B:"看趋势/找热点/决策",C:"学习/作品/能力提升",D:"谈合作/推进项目/撮合资源"}},
-    {t:"Q4 你最常见的卡钱原因？", o:{A:"太保守：不敢加速",B:"太冲动：容易追高",C:"懂很多：落地变现弱",D:"没杠杆：单打独斗"}},
-    {t:"Q5 有额外10万你会？", o:{A:"分批稳健配置",B:"押一个高弹性机会",C:"买工具/课提升产出",D:"做个项目/渠道合作"}},
-    {t:"Q6 你对副业更像？", o:{A:"不影响稳定就行",B:"要做就做大的",C:"技能型：可复制可升级",D:"资源型：渠道/分销/合伙"}},
-    {t:"Q7 你做决定更看重？", o:{A:"安全边际",B:"回报弹性",C:"可控提升路径",D:"资源匹配度（人/渠道）"}},
-    {t:"Q8 你更擅长？", o:{A:"长期执行不跑偏",B:"快速行动抢窗口",C:"搭流程提效率",D:"组织协作促成合作"}},
-    {t:"Q9 你最容易被什么拖累？", o:{A:"想太多行动慢",B:"冲太猛缺纪律",C:"研究过头交付少",D:"关系消耗边界弱"}},
-    {t:"Q10 你理想增长像？", o:{A:"平稳向上",B:"大波动但上行",C:"单价持续提升",D:"系统/团队放大"}},
-    {t:"Q11 面对不确定机会你会？", o:{A:"再等等更确定",B:"先上车再说",C:"小规模验证再加码",D:"拉人一起做降试错"}},
-    {t:"Q12 你最想解决的财务问题？", o:{A:"建立稳定系统",B:"抓住一次加速机会",C:"收入结构升级",D:"做成可复制项目"}},
-    {t:"Q13 你更像哪种人？", o:{A:"稳稳过日子也能赢",B:"敢拼敢赌才有大结果",C:"我靠专业吃饭",D:"我靠人脉与组织"}},
-    {t:"Q14 你最容易后悔的是？", o:{A:"该出手时没出手",B:"冲动上头买太多",C:"准备很久却没发布",D:"合作没写清规则"}},
-    {t:"Q15 你对“计划”的态度？", o:{A:"必须有：不然心慌",B:"计划赶不上变化",C:"计划=可执行清单",D:"计划=协作流程"}},
+    {t:"Q1 你更像哪种“搞钱角色”？", o:{A:"存钱小仓鼠：安全感第一",B:"冲浪选手：热点来了就上",C:"升级玩家：靠技能涨身价",D:"组队队长：靠合作放大"}},
+    {t:"Q2 看到别人暴富，你第一反应？", o:{A:"我不羡慕，我怕翻车",B:"我想试试！可能是机会",C:"我想研究：他怎么做到的",D:"我想链接：有没有合作位"}},
+    {t:"Q3 给你一笔钱，你更愿意？", o:{A:"分好账户，稳稳配置",B:"押一个高弹性机会",C:"买工具/课程提效率",D:"做项目/渠道合伙"}},
+    {t:"Q4 你最怕哪种情况？", o:{A:"突然没收入",B:"错过大机会",C:"努力了却没涨价",D:"团队不靠谱拖后腿"}},
+    {t:"Q5 你更能忍受？", o:{A:"慢一点，但稳",B:"波动大，但可能爆",C:"学习痛苦，但能变强",D:"沟通麻烦，但能放大"}},
+    {t:"Q6 你做副业更像？", o:{A:"小而稳：每月固定进账",B:"快而猛：抓一波赚一笔",C:"技能型：越做越贵",D:"资源型：越做越省力"}},
+    {t:"Q7 你最常见的“钱卡住”原因？", o:{A:"太谨慎：不敢加速",B:"太上头：容易追高",C:"准备太久：迟迟不发",D:"合作边界：总是我在扛"}},
+    {t:"Q8 你最擅长的一种能力？", o:{A:"长期坚持：不跑偏",B:"行动快：说干就干",C:"复盘强：越做越精",D:"组织强：能把人拧成一股绳"}},
+    {t:"Q9 你最容易踩的坑？", o:{A:"保守到错过",B:"冲动到回吐",C:"学太多不变现",D:"人情太多没规则"}},
+    {t:"Q10 你理想的“变富曲线”？", o:{A:"平稳向上",B:"剧烈波动但上行",C:"单价持续提升",D:"杠杆放大式增长"}},
+    {t:"Q11 你做决定更看重？", o:{A:"安全边际",B:"回报弹性",C:"可控提升路径",D:"资源匹配度"}},
+    {t:"Q12 你对风险的态度？", o:{A:"能不冒就不冒",B:"风险是门票",C:"用数据和试验控风险",D:"用合作分摊风险"}},
+    {t:"Q13 你更喜欢哪种“赚钱快感”？", o:{A:"账户越来越稳",B:"一波翻倍的刺激",C:"能力变强带来的涨价",D:"别人帮你赚钱的杠杆"}},
+    {t:"Q14 你更像哪种工作方式？", o:{A:"按流程走，很踏实",B:"临场发挥，抓机会",C:"做系统，提效率",D:"拉团队，推项目"}},
+    {t:"Q15 你面对新机会会？", o:{A:"先观望",B:"先上车",C:"小规模验证",D:"拉人一起做"}},
     {t:"Q16 你更相信？", o:{A:"复利",B:"趋势",C:"能力",D:"杠杆"}},
-    {t:"Q17 你更愿意的学习方式？", o:{A:"系统课慢慢学",B:"短平快抓重点",C:"做项目边做边学",D:"跟高手/社群合作学"}},
-    {t:"Q18 你赚钱最舒服的状态？", o:{A:"稳定、可预期",B:"刺激、有突破",C:"成长、越做越值钱",D:"协作、越做越省力"}},
-    {t:"Q19 你会被哪种话打动？", o:{A:"稳一点，别翻车",B:"机会来了就上",C:"把单价抬起来",D:"把资源连起来"}},
-    {t:"Q20 2026你最应该做的一件事？", o:{A:"把钱变成系统",B:"把机会变成节奏",C:"把能力变成产品",D:"把合作变成模型"}}
+    {t:"Q17 你更容易被哪句话击中？", o:{A:"稳一点，别翻车",B:"机会来了就冲",C:"把单价抬起来",D:"把资源连起来"}},
+    {t:"Q18 你对“计划”的看法？", o:{A:"必须有，不然慌",B:"计划赶不上变化",C:"计划=可执行清单",D:"计划=协作流程"}},
+    {t:"Q19 你最适合的成长方式？", o:{A:"建立规则与系统",B:"建立节奏与纪律",C:"建立作品与产品",D:"建立模型与团队"}},
+    {t:"Q20 2026你最该做的一件事？", o:{A:"把钱变成系统",B:"把机会变成节奏",C:"把能力变成产品",D:"把合作变成模型"}}
   ];
 
+  // 内置“配图”（SVG 插画），无需外链
+  function svgFor(type){
+    const common = `width="100%" height="140" viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg"`;
+    if(type==="A"){
+      return `<svg ${common}>
+        <defs>
+          <linearGradient id="gA" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#22C55E" stop-opacity="0.95"/>
+            <stop offset="0.55" stop-color="#60A5FA" stop-opacity="0.85"/>
+            <stop offset="1" stop-color="#7C3AED" stop-opacity="0.7"/>
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="720" height="220" rx="26" fill="rgba(0,0,0,0.15)"/>
+        <circle cx="150" cy="120" r="74" fill="url(#gA)" opacity="0.9"/>
+        <circle cx="230" cy="95" r="28" fill="rgba(255,255,255,0.22)"/>
+        <rect x="310" y="70" width="320" height="22" rx="11" fill="rgba(255,255,255,0.18)"/>
+        <rect x="310" y="108" width="270" height="18" rx="9" fill="rgba(255,255,255,0.14)"/>
+        <rect x="310" y="142" width="300" height="18" rx="9" fill="rgba(255,255,255,0.12)"/>
+        <text x="310" y="186" fill="rgba(255,255,255,0.85)" font-size="18" font-weight="800">稳稳变富｜系统型玩家</text>
+      </svg>`;
+    }
+    if(type==="B"){
+      return `<svg ${common}>
+        <defs>
+          <linearGradient id="gB" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#FF3D8D" stop-opacity="0.95"/>
+            <stop offset="0.6" stop-color="#F59E0B" stop-opacity="0.8"/>
+            <stop offset="1" stop-color="#60A5FA" stop-opacity="0.7"/>
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="720" height="220" rx="26" fill="rgba(0,0,0,0.15)"/>
+        <path d="M120 160 C180 40, 260 220, 330 90 C380 20, 460 210, 600 70" stroke="url(#gB)" stroke-width="18" fill="none" opacity="0.9"/>
+        <circle cx="600" cy="70" r="18" fill="rgba(255,255,255,0.22)"/>
+        <text x="60" y="60" fill="rgba(255,255,255,0.85)" font-size="18" font-weight="800">冲浪型玩家｜会抓机会</text>
+        <text x="60" y="92" fill="rgba(255,255,255,0.65)" font-size="13">关键：给你的行动力装上“护栏”</text>
+      </svg>`;
+    }
+    if(type==="C"){
+      return `<svg ${common}>
+        <defs>
+          <linearGradient id="gC" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#60A5FA" stop-opacity="0.95"/>
+            <stop offset="0.6" stop-color="#7C3AED" stop-opacity="0.8"/>
+            <stop offset="1" stop-color="#22C55E" stop-opacity="0.7"/>
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="720" height="220" rx="26" fill="rgba(0,0,0,0.15)"/>
+        <rect x="90" y="60" width="170" height="120" rx="22" fill="url(#gC)" opacity="0.85"/>
+        <rect x="280" y="75" width="360" height="20" rx="10" fill="rgba(255,255,255,0.18)"/>
+        <rect x="280" y="110" width="300" height="18" rx="9" fill="rgba(255,255,255,0.14)"/>
+        <rect x="280" y="144" width="340" height="18" rx="9" fill="rgba(255,255,255,0.12)"/>
+        <text x="280" y="186" fill="rgba(255,255,255,0.85)" font-size="18" font-weight="800">升级型玩家｜靠能力涨价</text>
+      </svg>`;
+    }
+    return `<svg ${common}>
+      <defs>
+        <linearGradient id="gD" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#22C55E" stop-opacity="0.95"/>
+          <stop offset="0.55" stop-color="#FF3D8D" stop-opacity="0.75"/>
+          <stop offset="1" stop-color="#7C3AED" stop-opacity="0.7"/>
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width="720" height="220" rx="26" fill="rgba(0,0,0,0.15)"/>
+      <circle cx="160" cy="110" r="44" fill="url(#gD)" opacity="0.85"/>
+      <circle cx="250" cy="150" r="34" fill="rgba(255,255,255,0.16)"/>
+      <circle cx="260" cy="85" r="24" fill="rgba(255,255,255,0.14)"/>
+      <rect x="330" y="70" width="310" height="22" rx="11" fill="rgba(255,255,255,0.18)"/>
+      <rect x="330" y="110" width="350" height="18" rx="9" fill="rgba(255,255,255,0.14)"/>
+      <rect x="330" y="144" width="280" height="18" rx="9" fill="rgba(255,255,255,0.12)"/>
+      <text x="330" y="186" fill="rgba(255,255,255,0.85)" font-size="18" font-weight="800">组队型玩家｜靠杠杆放大</text>
+    </svg>`;
+  }
+
+  // MBTI风格报告
   const TYPE = {
     A:{
-      name:"稳健累积型",
-      one:"你靠「系统 + 纪律」变富：慢，但不翻车。",
-      bullets:["优势：抗风险强、执行稳定，复利友好","雷区：过度保守 → 增长太慢","2026关键词：自动化、规则化、小试验区"],
-      report:[
-        "【自动化分流】工资到账即分流：生活费/储蓄/长期配置，减少临时决策。",
-        "【每月一次复盘】只做“月度复盘”：比例、进度、预算，不要天天焦虑。",
-        "【5%–10%试验区】留一小部分做新机会验证，让“稳”不等于“停”。"
-      ],
-      tag:"#稳健累积型"
+      code:"A",
+      name:"仓鼠存钱派（稳稳变富型）",
+      title:"你不是慢，你是“稳得可怕”。",
+      tagline:"你靠系统与纪律变富：不刺激，但很难翻车。",
+      superpower:"把混乱变成规则：记账、分配、长期坚持，你都能做到。",
+      bug:"过度保守：机会在眼前你会想“再等等”。",
+      bestFit:["长期定投/预算系统","稳定副业：模板/资料/课程整理","慢复利的技能：写作/内容沉淀"],
+      avoid:["一时上头重仓","频繁追热点","把“稳”当成“停”"],
+      mission:"2026 主线任务：把钱变成“自动化系统”（让你不用靠意志力）。",
+      task:"今天就做：把“工资到账后的分配”写成一条固定规则（比如 50/30/20），并设置自动转账。"
     },
     B:{
-      name:"进攻成长型",
-      one:"你靠「窗口期 + 行动力」提速：但必须加护栏。",
-      bullets:["优势：敢抓机会、行动快","雷区：追高/冲动加码 → 回吐快","2026关键词：先小后大、仓位规则、收益落袋"],
-      report:[
-        "【先小后大】任何新机会：先小规模验证，再决定加码，别一口吃成胖子。",
-        "【设置硬规则】写下最大亏损/最大回撤，触发就停手，保护本金与情绪。",
-        "【收益落袋】每次盈利拿一部分转入稳健仓，越打越强，不坐过山车。"
-      ],
-      tag:"#进攻成长型"
+      code:"B",
+      name:"冲浪机会派（进攻成长型）",
+      title:"你天生会抓机会，但也最容易被机会反噬。",
+      tagline:"你靠窗口期提速：关键是给行动力装护栏。",
+      superpower:"嗅觉很强：趋势/热点/窗口期，你比别人更早“感觉到”。",
+      bug:"容易上头：一兴奋就加码，结果把盈利吐回去。",
+      bestFit:["快验证的副业：带货/热点内容/短期项目","有规则的交易/投机（必须规则）","销售/BD/增长类岗位"],
+      avoid:["情绪化加仓","没有止损/止盈","把运气当能力"],
+      mission:"2026 主线任务：把机会变成“节奏”（先小后大 + 规则落袋）。",
+      task:"今天就做：写下你的“最大亏损上限”——触发就停止操作 48 小时。"
     },
     C:{
-      name:"认知套利型",
-      one:"你靠「能力与信息差」升级收入：关键是落地变现。",
-      bullets:["优势：会复盘会优化，长期成长确定性强","雷区：研究过头 → 交付太少","2026关键词：交付物、单价提升、可售能力"],
-      report:[
-        "【每月一个交付物】案例/模板/作品/服务页，必须可展示、可复用、可出售。",
-        "【学习=产出】所有学习都用“能否涨薪/接单/变现”验收，不做无效知识收藏。",
-        "【提高单价】选一条主线：加薪/跳槽/咨询/接单，把时间卖更贵。"
-      ],
-      tag:"#认知套利型"
+      code:"C",
+      name:"升级涨价派（认知套利型）",
+      title:"你适合的不是“更努力”，是“把自己卖更贵”。",
+      tagline:"你靠能力与信息差变富：关键是把学习变成可售交付物。",
+      superpower:"会复盘会迭代：别人瞎忙，你能把方法打磨成体系。",
+      bug:"研究过头：收藏一堆干货，但交付太少。",
+      bestFit:["技能变现：接单/咨询/课程/模板","做作品集型副业：Notion/简历/面试/技能包","产品化：把经验做成可卖的东西"],
+      avoid:["只学不发","追求完美不发布","没有定价意识"],
+      mission:"2026 主线任务：把能力变成“产品”（可展示、可复用、可定价）。",
+      task:"今天就做：写一个“你能卖的服务清单”（3项）+ 每项一个价格（哪怕先写出来）。"
     },
     D:{
-      name:"资源整合型",
-      one:"你靠「合作与杠杆」放大结果：规则比关系重要。",
-      bullets:["优势：能组织协作，适合项目/渠道/系统","雷区：边界不清 → 你在扛","2026关键词：规则、流程、可复制模型"],
-      report:[
-        "【先写规则】分工/交付/结算写清楚再合作，别用热情当合同。",
-        "【流程化协作】用模板/文档固化沟通，减少反复解释与无效会议。",
-        "【做可复制模型】把一次项目抽象成“流程+模板+报价”，下次直接复用。"
-      ],
-      tag:"#资源整合型"
+      code:"D",
+      name:"组队放大派（资源整合型）",
+      title:"你赚钱的上限取决于：你能撬动多少人和资源。",
+      tagline:"你靠合作与杠杆放大结果：规则比关系更重要。",
+      superpower:"你能把人拧成一股绳：组织、推进、合作谈判是你的强项。",
+      bug:"边界不清：合作一开始热情满满，最后变成你在扛。",
+      bestFit:["项目型副业：合伙/渠道/分销/联名","运营/PM/BD/社区主理人","系统化协作：SOP/流程/报价模型"],
+      avoid:["口头约定","不写清分工结算","人情消耗式合作"],
+      mission:"2026 主线任务：把合作做成“可复制模型”（流程+模板+报价）。",
+      task:"今天就做：把你最近一次合作的“分工/交付/结算”写成1页模板，下次直接套用。"
     }
   };
 
   // ---------- state ----------
   const $ = (id)=>document.getElementById(id);
+  const gate = $("gate");
   const quiz = $("quiz");
   const nav = $("nav");
   const result = $("result");
@@ -333,6 +471,7 @@
             </label>
           `).join("")}
         </div>
+        <div class="mini" style="margin-top:10px">第 ${idx+1} 题 / ${QUESTIONS.length}</div>
       </div>
     `;
 
@@ -362,7 +501,7 @@
   function compute(){
     const score = {A:0,B:0,C:0,D:0};
     answers.forEach(a=>score[a]++);
-    // tie-break: C > D > A > B（更符合“爆款自我认知”）
+    // 平分时优先：C > D > A > B（更符合“成长/产品化”导向）
     const pr = {C:4,D:3,A:2,B:1};
     const sorted = Object.entries(score).sort((x,y)=>{
       if(y[1]!==x[1]) return y[1]-x[1];
@@ -371,33 +510,54 @@
     return {type: sorted[0][0], score};
   }
 
+  function showOnly(section){
+    // gate / quiz+nav / result 三段互斥
+    gate.classList.add("hidden");
+    quiz.classList.add("hidden");
+    nav.classList.add("hidden");
+    result.classList.add("hidden");
+
+    if(section==="gate") gate.classList.remove("hidden");
+    if(section==="quiz"){ quiz.classList.remove("hidden"); nav.classList.remove("hidden"); }
+    if(section==="result") result.classList.remove("hidden");
+  }
+
   function showResult(){
     const {type, score} = compute();
     const t = TYPE[type];
     const scoreLine = `A:${score.A}  B:${score.B}  C:${score.C}  D:${score.D}`;
 
     $("resultCard").innerHTML = `
-      <div class="badge">${type} 类｜${t.name}</div>
-      <div class="big">你的钱味体质：${t.name}</div>
-      <div class="one">${t.one}</div>
+      <div class="badge">${t.code} 类｜${t.name}</div>
+      <div class="big">你的钱味：${t.name}</div>
+      <div class="one">${t.title}</div>
+      <div class="mini" style="margin-top:6px">${t.tagline}</div>
       <div class="divider"></div>
-      <div class="list">
-        ${t.bullets.map(x=>`• ${x}`).join("<br>")}
-      </div>
+      ${svgFor(type)}
       <div class="mini" style="margin-top:10px">得分：${scoreLine}（建议截图保存这张卡）</div>
     `;
 
-    $("report").innerHTML = t.report.map(p=>`<p style="margin:0 0 10px">${p}</p>`).join("");
+    const report = `
+      <p><b>🧬 你的人设：</b>${t.name}</p>
+      <p><b>🔥 搞钱超能力：</b>${t.superpower}</p>
+      <p><b>🕳️ 致命BUG：</b>${t.bug}</p>
+      <p><b>🎯 适合的路子：</b><br>• ${t.bestFit.join("<br>• ")}</p>
+      <p><b>🚫 你最好避开的坑：</b><br>• ${t.avoid.join("<br>• ")}</p>
+      <p><b>🗺️ 2026主线任务：</b>${t.mission}</p>
+    `;
+    $("report").innerHTML = report;
+
+    $("task").innerHTML = `• ${t.task}`;
 
     $("share").textContent = [
       `我测出来是「${t.name}」`,
-      `一句话：${t.one}`,
+      `一句话：${t.title}`,
       `得分：${scoreLine}`,
-      `${t.tag} #2026钱味觉醒测试`
+      `#钱味觉醒测试 #2026财富增长模式`
     ].join("\n");
 
-    result.classList.remove("hidden");
-    window.scrollTo({top: document.body.scrollHeight, behavior:"smooth"});
+    showOnly("result");
+    window.scrollTo({top:0, behavior:"smooth"});
   }
 
   // ---------- events ----------
@@ -407,8 +567,8 @@
       alert("口令不正确。请回到小红书订单自动回复查看「神秘口令」。");
       return;
     }
-    quiz.classList.remove("hidden");
-    nav.classList.remove("hidden");
+    // 进入题目后，口令页完全隐藏（互斥显示）
+    showOnly("quiz");
     renderQuestion();
   });
 
@@ -423,8 +583,17 @@
   $("reset").addEventListener("click", ()=>{
     for(let i=0;i<answers.length;i++) answers[i]=null;
     idx=0;
-    result.classList.add("hidden");
+    showOnly("quiz");
     renderQuestion();
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+
+  $("back").addEventListener("click", ()=>{
+    for(let i=0;i<answers.length;i++) answers[i]=null;
+    idx=0;
+    $("code").value = "";
+    updateProgress();
+    showOnly("gate"); // 回到口令页
     window.scrollTo({top:0, behavior:"smooth"});
   });
 
