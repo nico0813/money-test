@@ -1,91 +1,443 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>2026 钱味觉醒测试</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>2026 钱味觉醒测试｜完整版</title>
+  <style>
+    :root{
+      --bg0:#070a14;
+      --card:rgba(255,255,255,.06);
+      --bd:rgba(255,255,255,.14);
+      --tx:#e5e7eb;
+      --sub:#a7b0c0;
+      --accent:#7c3aed;
+      --accent2:#22c55e;
+      --warn:#f59e0b;
+      --max:920px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"PingFang SC","Microsoft YaHei",sans-serif;
+      color:var(--tx);
+      background:
+        radial-gradient(900px 600px at 15% 10%, rgba(124,58,237,.25), transparent 55%),
+        radial-gradient(900px 600px at 85% 30%, rgba(34,197,94,.18), transparent 55%),
+        radial-gradient(700px 500px at 70% 85%, rgba(96,165,250,.18), transparent 55%),
+        var(--bg0);
+      padding:16px 12px 44px;
+    }
+    .wrap{max-width:var(--max);margin:0 auto}
+    .hero{
+      border:1px solid var(--bd);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius:18px;
+      padding:14px;
+      backdrop-filter: blur(10px);
+    }
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    h1{margin:0 0 6px;font-size:18px;letter-spacing:.2px}
+    .sub{margin:0;color:var(--sub);font-size:13px;line-height:1.6}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;border-radius:999px;border:1px solid var(--bd);
+      background:rgba(255,255,255,.04);
+      font-size:12px;color:var(--sub);
+      user-select:none;
+    }
+    .card{
+      margin-top:12px;
+      border:1px solid var(--bd);
+      background:rgba(255,255,255,.04);
+      border-radius:18px;
+      padding:14px;
+      backdrop-filter: blur(10px);
+    }
+    .hidden{display:none}
+    input{
+      width:min(420px, 100%);
+      border:1px solid var(--bd);
+      background:rgba(255,255,255,.05);
+      color:var(--tx);
+      border-radius:14px;
+      padding:12px 12px;
+      font-size:14px;
+      outline:none;
+    }
+    input::placeholder{color:#97a3b8}
+    button{
+      border:1px solid var(--bd);
+      background:rgba(255,255,255,.05);
+      color:var(--tx);
+      border-radius:14px;
+      padding:12px 14px;
+      font-weight:900;
+      cursor:pointer;
+    }
+    button.primary{
+      background:linear-gradient(90deg, var(--accent), #2563eb);
+      border-color:transparent;
+    }
+    button:disabled{opacity:.5;cursor:not-allowed}
+    .progressWrap{margin-top:10px}
+    .bar{
+      height:10px;border-radius:999px;background:rgba(255,255,255,.08);
+      border:1px solid var(--bd);overflow:hidden;
+    }
+    .fill{height:100%;width:0%;background:linear-gradient(90deg, #22c55e, #60a5fa, #a78bfa)}
+    .ptext{margin-top:8px;color:var(--sub);font-size:12px}
 
-<style>
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;background:#0f172a;color:#fff;padding:20px}
-.container{max-width:600px;margin:auto}
-.card{background:#1e293b;padding:20px;border-radius:16px;margin-top:20px}
-button{padding:12px;border:none;border-radius:12px;background:#7c3aed;color:white;font-weight:bold;cursor:pointer;margin-top:10px}
-input{padding:12px;border-radius:12px;border:none;width:100%;margin-top:10px}
-.option{background:#334155;padding:12px;border-radius:12px;margin-top:10px;cursor:pointer}
-.option:hover{background:#475569}
-.hidden{display:none}
-.result{font-size:20px;font-weight:bold;margin-top:20px}
-.small{font-size:14px;color:#94a3b8}
-</style>
+    .qtitle{margin:0 0 10px;font-size:15px;font-weight:1000;line-height:1.35}
+    .opts{display:grid;gap:10px}
+    label.opt{
+      display:block;cursor:pointer;
+      border:1px solid rgba(255,255,255,.16);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border-radius:16px;
+      padding:12px;
+      transition:transform .08s ease, border-color .12s ease;
+    }
+    label.opt:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.26)}
+    .k{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:28px;height:28px;border-radius:10px;
+      background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);
+      font-weight:1000;margin-right:10px;flex:0 0 auto;
+    }
+    input[type="radio"]{display:none}
+    input[type="radio"]:checked + .inner{
+      outline:2px solid rgba(124,58,237,.55);
+      border-radius:12px;padding:6px;
+    }
+    .inner{display:flex;align-items:flex-start;gap:8px}
+    .otxt{line-height:1.45;font-size:14px}
+
+    .navRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .mini{color:var(--sub);font-size:12px;line-height:1.6}
+    .divider{height:1px;background:rgba(255,255,255,.12);margin:12px 0}
+
+    .resultCard{
+      padding:14px;border-radius:18px;border:1px solid rgba(255,255,255,.18);
+      background:linear-gradient(135deg, rgba(124,58,237,.24), rgba(34,197,94,.16), rgba(96,165,250,.16));
+    }
+    .badge{
+      display:inline-block;padding:6px 12px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06);
+      font-size:12px;font-weight:1000;
+    }
+    .big{font-size:22px;font-weight:1100;margin:6px 0 6px}
+    .one{font-weight:900;line-height:1.5}
+    .list{font-size:13px;line-height:1.75;color:#d9e0ee}
+    .share{
+      white-space:pre-wrap;
+      background:#070a14;border:1px solid rgba(255,255,255,.14);
+      padding:12px;border-radius:14px;
+      font-size:13px;line-height:1.55;color:#e5e7eb;
+    }
+    .toast{
+      position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
+      background:#0b1220;border:1px solid rgba(255,255,255,.14);color:#e5e7eb;
+      padding:10px 12px;border-radius:14px;font-size:13px;
+      opacity:0;pointer-events:none;transition:.18s;
+    }
+    .toast.show{opacity:1}
+  </style>
 </head>
 
 <body>
-<div class="container">
-<h2>2026 钱味觉醒测试</h2>
-<p class="small">输入神秘口令进入测试</p>
+  <div class="wrap">
+    <section class="hero">
+      <div class="row" style="justify-content:space-between">
+        <div>
+          <h1>2026 钱味觉醒测试｜完整版</h1>
+          <p class="sub">
+            不是算命、不预测。只做「财富增长模式」画像 + 2026 行动清单。<br>
+            <b>20题</b>测完会生成一张“钱味卡片”，建议截图保存。
+          </p>
+        </div>
+        <div class="pill">⏱ 20题｜约2分钟｜可截图分享</div>
+      </div>
 
-<input id="code" placeholder="输入神秘口令">
-<button onclick="unlock()">进入测试</button>
+      <div class="row" style="margin-top:12px">
+        <input id="code" placeholder="输入神秘口令（订单自动回复里）" />
+        <button class="primary" id="unlock">解锁进入测试</button>
+        <button id="help">打不开？</button>
+      </div>
 
-<div id="quiz" class="hidden card"></div>
-<div id="resultBox" class="hidden card">
-<div id="resultText" class="result"></div>
-<p id="resultDesc"></p>
-</div>
-</div>
+      <div class="progressWrap">
+        <div class="bar"><div class="fill" id="fill"></div></div>
+        <div class="ptext" id="ptext">进度：0 / 20</div>
+      </div>
+
+      <p class="mini hidden" id="helpText" style="margin-top:10px">
+        解决方法：1) 刷新页面 2) 换 Safari/Chrome 3) 仍不行：回到小红书回复“打不开”，我会补发备用入口/口令。<br>
+        提示：口令建议 3 天一换。
+      </p>
+    </section>
+
+    <section class="card hidden" id="quiz"></section>
+
+    <section class="card hidden" id="nav">
+      <div class="navRow">
+        <button id="prev">上一题</button>
+        <button id="next" class="primary">下一题</button>
+        <button id="submit" class="primary hidden">出结果（钱味卡片）</button>
+        <button id="reset">重做</button>
+      </div>
+      <div class="mini" style="margin-top:10px">
+        小提示：按直觉选，别想太久（你越纠结越容易测不准）。
+      </div>
+    </section>
+
+    <section class="card hidden" id="result">
+      <div class="resultCard" id="resultCard"></div>
+
+      <div class="divider"></div>
+
+      <h3 style="margin:0 0 8px;font-size:14px">完整版报告（2026行动清单）</h3>
+      <div class="list" id="report"></div>
+
+      <div class="divider"></div>
+
+      <h3 style="margin:0 0 8px;font-size:14px">复制分享文案（发小红书/朋友圈）</h3>
+      <div class="share" id="share"></div>
+      <div class="navRow">
+        <button id="copy">复制文案</button>
+      </div>
+
+      <p class="mini" style="margin-top:10px">
+        免责声明：本测试仅作个人倾向分析，不构成投资/理财建议；不承诺任何收益或结果。
+      </p>
+    </section>
+  </div>
+
+  <div class="toast" id="toast">已复制 ✅</div>
 
 <script>
-const TODAY_CODE="WAKEN2026";
+  // ✅ 神秘口令（你随时改）
+  const TODAY_CODE = "WAKEN2026";
 
-const questions=[
-{q:"你更舒服的赚钱方式？",options:{A:"稳稳积累",B:"抓爆发机会",C:"提升技能赚钱",D:"靠合作放大"}},
-{q:"面对风险你更像？",options:{A:"保守优先",B:"敢冲",C:"分析优化",D:"找人一起"}}
-];
+  // 20题，每题选 A/B/C/D 代表对应类型+1
+  const QUESTIONS = [
+    {t:"Q1 你更舒服的赚钱方式？", o:{A:"稳稳积累：慢慢变大",B:"抓窗口：短期提速",C:"提升技能：同样时间赚更多",D:"靠合作：资源放大"}},
+    {t:"Q2 面对亏损你第一反应？", o:{A:"先保命：不想再亏",B:"能扛波动：接受波动成本",C:"复盘原因：改方法",D:"找人/分散：降低单点风险"}},
+    {t:"Q3 你最愿意把时间花在？", o:{A:"预算/记账/系统化",B:"看趋势/找热点/决策",C:"学习/作品/能力提升",D:"谈合作/推进项目/撮合资源"}},
+    {t:"Q4 你最常见的卡钱原因？", o:{A:"太保守：不敢加速",B:"太冲动：容易追高",C:"懂很多：落地变现弱",D:"没杠杆：单打独斗"}},
+    {t:"Q5 有额外10万你会？", o:{A:"分批稳健配置",B:"押一个高弹性机会",C:"买工具/课提升产出",D:"做个项目/渠道合作"}},
+    {t:"Q6 你对副业更像？", o:{A:"不影响稳定就行",B:"要做就做大的",C:"技能型：可复制可升级",D:"资源型：渠道/分销/合伙"}},
+    {t:"Q7 你做决定更看重？", o:{A:"安全边际",B:"回报弹性",C:"可控提升路径",D:"资源匹配度（人/渠道）"}},
+    {t:"Q8 你更擅长？", o:{A:"长期执行不跑偏",B:"快速行动抢窗口",C:"搭流程提效率",D:"组织协作促成合作"}},
+    {t:"Q9 你最容易被什么拖累？", o:{A:"想太多行动慢",B:"冲太猛缺纪律",C:"研究过头交付少",D:"关系消耗边界弱"}},
+    {t:"Q10 你理想增长像？", o:{A:"平稳向上",B:"大波动但上行",C:"单价持续提升",D:"系统/团队放大"}},
+    {t:"Q11 面对不确定机会你会？", o:{A:"再等等更确定",B:"先上车再说",C:"小规模验证再加码",D:"拉人一起做降试错"}},
+    {t:"Q12 你最想解决的财务问题？", o:{A:"建立稳定系统",B:"抓住一次加速机会",C:"收入结构升级",D:"做成可复制项目"}},
+    {t:"Q13 你更像哪种人？", o:{A:"稳稳过日子也能赢",B:"敢拼敢赌才有大结果",C:"我靠专业吃饭",D:"我靠人脉与组织"}},
+    {t:"Q14 你最容易后悔的是？", o:{A:"该出手时没出手",B:"冲动上头买太多",C:"准备很久却没发布",D:"合作没写清规则"}},
+    {t:"Q15 你对“计划”的态度？", o:{A:"必须有：不然心慌",B:"计划赶不上变化",C:"计划=可执行清单",D:"计划=协作流程"}},
+    {t:"Q16 你更相信？", o:{A:"复利",B:"趋势",C:"能力",D:"杠杆"}},
+    {t:"Q17 你更愿意的学习方式？", o:{A:"系统课慢慢学",B:"短平快抓重点",C:"做项目边做边学",D:"跟高手/社群合作学"}},
+    {t:"Q18 你赚钱最舒服的状态？", o:{A:"稳定、可预期",B:"刺激、有突破",C:"成长、越做越值钱",D:"协作、越做越省力"}},
+    {t:"Q19 你会被哪种话打动？", o:{A:"稳一点，别翻车",B:"机会来了就上",C:"把单价抬起来",D:"把资源连起来"}},
+    {t:"Q20 2026你最应该做的一件事？", o:{A:"把钱变成系统",B:"把机会变成节奏",C:"把能力变成产品",D:"把合作变成模型"}}
+  ];
 
-const types={
-A:{name:"稳健累积型",desc:"适合长期积累，关键词：纪律、复利"},
-B:{name:"进攻成长型",desc:"适合窗口爆发，关键词：节奏、风口"},
-C:{name:"认知套利型",desc:"适合技能升级，关键词：单价、专业"},
-D:{name:"资源整合型",desc:"适合合作放大，关键词：杠杆、连接"}
-};
+  const TYPE = {
+    A:{
+      name:"稳健累积型",
+      one:"你靠「系统 + 纪律」变富：慢，但不翻车。",
+      bullets:["优势：抗风险强、执行稳定，复利友好","雷区：过度保守 → 增长太慢","2026关键词：自动化、规则化、小试验区"],
+      report:[
+        "【自动化分流】工资到账即分流：生活费/储蓄/长期配置，减少临时决策。",
+        "【每月一次复盘】只做“月度复盘”：比例、进度、预算，不要天天焦虑。",
+        "【5%–10%试验区】留一小部分做新机会验证，让“稳”不等于“停”。"
+      ],
+      tag:"#稳健累积型"
+    },
+    B:{
+      name:"进攻成长型",
+      one:"你靠「窗口期 + 行动力」提速：但必须加护栏。",
+      bullets:["优势：敢抓机会、行动快","雷区：追高/冲动加码 → 回吐快","2026关键词：先小后大、仓位规则、收益落袋"],
+      report:[
+        "【先小后大】任何新机会：先小规模验证，再决定加码，别一口吃成胖子。",
+        "【设置硬规则】写下最大亏损/最大回撤，触发就停手，保护本金与情绪。",
+        "【收益落袋】每次盈利拿一部分转入稳健仓，越打越强，不坐过山车。"
+      ],
+      tag:"#进攻成长型"
+    },
+    C:{
+      name:"认知套利型",
+      one:"你靠「能力与信息差」升级收入：关键是落地变现。",
+      bullets:["优势：会复盘会优化，长期成长确定性强","雷区：研究过头 → 交付太少","2026关键词：交付物、单价提升、可售能力"],
+      report:[
+        "【每月一个交付物】案例/模板/作品/服务页，必须可展示、可复用、可出售。",
+        "【学习=产出】所有学习都用“能否涨薪/接单/变现”验收，不做无效知识收藏。",
+        "【提高单价】选一条主线：加薪/跳槽/咨询/接单，把时间卖更贵。"
+      ],
+      tag:"#认知套利型"
+    },
+    D:{
+      name:"资源整合型",
+      one:"你靠「合作与杠杆」放大结果：规则比关系重要。",
+      bullets:["优势：能组织协作，适合项目/渠道/系统","雷区：边界不清 → 你在扛","2026关键词：规则、流程、可复制模型"],
+      report:[
+        "【先写规则】分工/交付/结算写清楚再合作，别用热情当合同。",
+        "【流程化协作】用模板/文档固化沟通，减少反复解释与无效会议。",
+        "【做可复制模型】把一次项目抽象成“流程+模板+报价”，下次直接复用。"
+      ],
+      tag:"#资源整合型"
+    }
+  };
 
-let answers=[];
+  // ---------- state ----------
+  const $ = (id)=>document.getElementById(id);
+  const quiz = $("quiz");
+  const nav = $("nav");
+  const result = $("result");
+  const fill = $("fill");
+  const ptext = $("ptext");
+  const toast = $("toast");
 
-function unlock(){
-const input=document.getElementById("code").value.trim();
-if(input!==TODAY_CODE){alert("口令错误");return;}
-startQuiz();
-}
+  let idx = 0;
+  const answers = Array(QUESTIONS.length).fill(null);
 
-function startQuiz(){
-document.getElementById("quiz").classList.remove("hidden");
-renderQuestion(0);
-}
+  function toastShow(msg){
+    toast.textContent = msg;
+    toast.classList.add("show");
+    setTimeout(()=>toast.classList.remove("show"), 900);
+  }
 
-function renderQuestion(index){
-if(index>=questions.length){showResult();return;}
-const quiz=document.getElementById("quiz");
-quiz.innerHTML="<h3>"+questions[index].q+"</h3>";
-for(let key in questions[index].options){
-const div=document.createElement("div");
-div.className="option";
-div.innerText=key+"："+questions[index].options[key];
-div.onclick=function(){answers.push(key);renderQuestion(index+1);};
-quiz.appendChild(div);
-}
-}
+  function updateProgress(){
+    const done = answers.filter(x=>x!==null).length;
+    ptext.textContent = `进度：${done} / ${QUESTIONS.length}`;
+    fill.style.width = `${Math.round(done/QUESTIONS.length*100)}%`;
+  }
 
-function showResult(){
-document.getElementById("quiz").classList.add("hidden");
-document.getElementById("resultBox").classList.remove("hidden");
-const score={A:0,B:0,C:0,D:0};
-answers.forEach(a=>score[a]++);
-let maxType="A";
-for(let key in score){if(score[key]>score[maxType]){maxType=key;}}
-document.getElementById("resultText").innerText="你的钱味体质："+types[maxType].name;
-document.getElementById("resultDesc").innerText=types[maxType].desc;
-}
+  function renderQuestion(){
+    const q = QUESTIONS[idx];
+    const picked = answers[idx];
+
+    quiz.innerHTML = `
+      <div>
+        <p class="qtitle">${q.t}</p>
+        <div class="opts">
+          ${Object.entries(q.o).map(([k,v])=>`
+            <label class="opt">
+              <input type="radio" name="q${idx}" value="${k}" ${picked===k?"checked":""}/>
+              <span class="inner">
+                <span class="k">${k}</span>
+                <span class="otxt">${v}</span>
+              </span>
+            </label>
+          `).join("")}
+        </div>
+      </div>
+    `;
+
+    quiz.querySelectorAll(`input[name="q${idx}"]`).forEach(r=>{
+      r.addEventListener("change", (e)=>{
+        answers[idx] = e.target.value;
+        updateProgress();
+        updateNavButtons();
+      });
+    });
+
+    updateProgress();
+    updateNavButtons();
+  }
+
+  function updateNavButtons(){
+    $("prev").disabled = (idx===0);
+    $("next").disabled = (answers[idx]===null);
+
+    const allDone = answers.every(x=>x!==null);
+    const atLast = idx === QUESTIONS.length-1;
+
+    $("submit").classList.toggle("hidden", !(allDone && atLast));
+    $("next").classList.toggle("hidden", (allDone && atLast));
+  }
+
+  function compute(){
+    const score = {A:0,B:0,C:0,D:0};
+    answers.forEach(a=>score[a]++);
+    // tie-break: C > D > A > B（更符合“爆款自我认知”）
+    const pr = {C:4,D:3,A:2,B:1};
+    const sorted = Object.entries(score).sort((x,y)=>{
+      if(y[1]!==x[1]) return y[1]-x[1];
+      return pr[y[0]]-pr[x[0]];
+    });
+    return {type: sorted[0][0], score};
+  }
+
+  function showResult(){
+    const {type, score} = compute();
+    const t = TYPE[type];
+    const scoreLine = `A:${score.A}  B:${score.B}  C:${score.C}  D:${score.D}`;
+
+    $("resultCard").innerHTML = `
+      <div class="badge">${type} 类｜${t.name}</div>
+      <div class="big">你的钱味体质：${t.name}</div>
+      <div class="one">${t.one}</div>
+      <div class="divider"></div>
+      <div class="list">
+        ${t.bullets.map(x=>`• ${x}`).join("<br>")}
+      </div>
+      <div class="mini" style="margin-top:10px">得分：${scoreLine}（建议截图保存这张卡）</div>
+    `;
+
+    $("report").innerHTML = t.report.map(p=>`<p style="margin:0 0 10px">${p}</p>`).join("");
+
+    $("share").textContent = [
+      `我测出来是「${t.name}」`,
+      `一句话：${t.one}`,
+      `得分：${scoreLine}`,
+      `${t.tag} #2026钱味觉醒测试`
+    ].join("\n");
+
+    result.classList.remove("hidden");
+    window.scrollTo({top: document.body.scrollHeight, behavior:"smooth"});
+  }
+
+  // ---------- events ----------
+  $("unlock").addEventListener("click", ()=>{
+    const v = ($("code").value || "").trim();
+    if(v !== TODAY_CODE){
+      alert("口令不正确。请回到小红书订单自动回复查看「神秘口令」。");
+      return;
+    }
+    quiz.classList.remove("hidden");
+    nav.classList.remove("hidden");
+    renderQuestion();
+  });
+
+  $("help").addEventListener("click", ()=>{
+    $("helpText").classList.toggle("hidden");
+  });
+
+  $("prev").addEventListener("click", ()=>{ idx--; renderQuestion(); });
+  $("next").addEventListener("click", ()=>{ idx++; renderQuestion(); });
+  $("submit").addEventListener("click", ()=> showResult());
+
+  $("reset").addEventListener("click", ()=>{
+    for(let i=0;i<answers.length;i++) answers[i]=null;
+    idx=0;
+    result.classList.add("hidden");
+    renderQuestion();
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+
+  $("copy").addEventListener("click", async ()=>{
+    try{
+      await navigator.clipboard.writeText($("share").textContent);
+      toastShow("已复制 ✅");
+    }catch(e){
+      alert("复制失败：请手动长按复制。");
+    }
+  });
+
+  updateProgress();
 </script>
-
 </body>
 </html>
