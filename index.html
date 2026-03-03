@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <title>2026 钱味觉醒测试｜完整版</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <!-- 截图用 -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
   <style>
     :root{
       --bg:#050612;
@@ -223,22 +223,12 @@
       width:82%;height:52%;
       border-radius:52px;
     }
-    /* 各类型卡面配色 + 小道具 */
-    .avatar-A .hairBand{
-      background:linear-gradient(135deg,#f97316,#facc15);
-    }
-    .avatar-B .hairBand{
-      background:linear-gradient(135deg,#22c55e,#14b8a6);
-    }
-    .avatar-C .hairBand{
-      background:linear-gradient(135deg,#38bdf8,#6366f1);
-    }
-    .avatar-D .hairBand{
-      background:linear-gradient(135deg,#f472b6,#fb7185);
-    }
-    .prop{
-      position:absolute;opacity:.85;
-    }
+    .avatar-A .hairBand{background:linear-gradient(135deg,#f97316,#facc15);}
+    .avatar-B .hairBand{background:linear-gradient(135deg,#22c55e,#14b8a6);}
+    .avatar-C .hairBand{background:linear-gradient(135deg,#38bdf8,#6366f1);}
+    .avatar-D .hairBand{background:linear-gradient(135deg,#f472b6,#fb7185);}
+
+    .prop{position:absolute;opacity:.88}
     .prop-coin{
       width:18px;height:18px;border-radius:999px;
       background:radial-gradient(circle at 30% 20%,#fefce8,#facc15);
@@ -246,9 +236,7 @@
       right:8px;bottom:10px;
       box-shadow:0 0 10px rgba(234,179,8,.6);
     }
-    .prop-rocket{
-      right:6px;bottom:8px;width:22px;height:32px;
-    }
+    .prop-rocket{right:6px;bottom:8px;width:22px;height:32px;}
     .rocket-body{
       width:14px;height:22px;border-radius:999px;
       background:linear-gradient(135deg,#e5e7eb,#60a5fa);
@@ -296,14 +284,10 @@
       box-shadow:0 5px 0 #a5b4fc;
     }
 
-    .rMain{}
     .rtype{font-size:13px;opacity:.85;margin-bottom:2px}
     .rtitle{font-size:18px;font-weight:900}
     .raka{font-size:12px;color:var(--sub)}
-
-    .resBody{margin-top:12px;font-size:13px;line-height:1.8;white-space:pre-wrap}
-    .resBody br{margin-bottom:4px}
-
+    .resBody{margin-top:12px;font-size:13px;line-height:1.85;white-space:pre-wrap}
     .shotImg{width:100%;border-radius:18px;margin-top:10px;border:1px solid rgba(148,163,184,.5)}
     .shotNote{font-size:12px;color:var(--sub);margin-top:4px}
 
@@ -321,6 +305,14 @@
     }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .loadingText { font-size: 14px; color: var(--sub); letter-spacing: 1px; text-align:center; }
+
+    /* 小屏更友好 */
+    @media (max-width: 500px) {
+      .avatar { width: 80px; height: 100px; }
+      .faceWrap { width: 55%; height: 55%; }
+      .hairBand { height: 48%; }
+      .prop { transform: scale(0.85); transform-origin: bottom right; }
+    }
   </style>
 </head>
 
@@ -376,8 +368,15 @@
       <button class="primary" id="shotBtn">生成截图卡片</button>
       <button id="againBtn">返回最开始重新测</button>
     </div>
+
+    <!-- 2) 分享话术按钮（提升二次传播） -->
+    <div class="row navRow">
+      <button id="shareTextBtn" class="primary">一键生成分享文案</button>
+    </div>
+
     <p class="shotNote">
-      生成后，往下滑，长按图片即可保存 / 发小红书 / 朋友圈。
+      生成后，往下滑，长按图片即可保存 / 发小红书 / 朋友圈。<br>
+      分享文案会尝试自动复制到剪贴板（不支持时会弹出文本供你复制）。
     </p>
   </section>
 
@@ -391,362 +390,321 @@
 
 <script>
   // ====== 配置区 ======
-  const TODAY_CODE = "WAKEN2026"; // 神秘口令，可以随时改
+  const TODAY_CODE = "WAKEN2026";
 
+  // QUESTIONS（你这版升级）
   const QUESTIONS = [
     { t:"你银行卡余额低于 4 位数时，你最真实的反应是？", o:{
-      A:"立刻焦虑，开始算钱",
-      B:"心想：还能再搏一把",
-      C:"自责：我是不是不够厉害",
-      D:"想找个人倾诉"
+      A:"立刻焦虑，开始算每一分钱的去向",
+      B:"心想：这点钱算什么，再搏一把就翻身",
+      C:"自责到失眠：我怎么又一年没变现，还在原地踏步",
+      D:"好想找个人抱抱，但又怕别人觉得我没用"
     }},
     { t:"如果突然失业，你第一步会？", o:{
-      A:"立刻削减开支",
-      B:"找下一个更大的机会",
-      C:"报个课，升级自己",
-      D:"联系所有认识的人"
+      A:"立刻削减开支，先把命保住",
+      B:"找下一个更大的机会，直接换赛道冲",
+      C:"报课+复盘+补短板：我不能被淘汰",
+      D:"联系人脉求机会：先有人接住我再说"
     }},
     { t:"你更害怕哪种未来？", o:{
-      A:"不稳定",
-      B:"错过风口",
-      C:"被淘汰",
-      D:"单打独斗"
+      A:"不稳定：一觉醒来规则变了",
+      B:"错过风口：别人起飞我还在地上",
+      C:"被淘汰：努力半辈子发现不值钱",
+      D:"单打独斗：遇到事连个靠的人都没有"
     }},
     { t:"别人暴富，你心里最真实的一句是？", o:{
-      A:"运气而已",
-      B:"我也想赌一把",
-      C:"他肯定有本事",
-      D:"背后一定有人"
+      A:"运气好而已，我可不想赌命",
+      B:"艹，为什么不是我？我也敢all in啊",
+      C:"他肯定比我更自律/更聪明，我得再卷一点",
+      D:"肯定有人在后面推他，我怎么就没人带呢"
     }},
     { t:"你做决定时最常卡住的点？", o:{
-      A:"安不安全",
-      B:"值不值得赌",
-      C:"逻辑是不是对",
-      D:"有没有队友"
+      A:"安不安全：亏了我会崩",
+      B:"值不值得赌：不赌就没戏",
+      C:"逻辑是不是对：我怕我判断错",
+      D:"有没有队友：一个人扛太累"
     }},
     { t:"你最容易在哪件事上花钱？", o:{
-      A:"让生活更稳",
-      B:"让自己爽",
-      C:"提升能力",
-      D:"维系关系"
+      A:"让生活更稳：保险/备份/应急",
+      B:"让自己爽：先快乐再说",
+      C:"提升能力：课/工具/资源我全要",
+      D:"维系关系：情绪价值和人情账"
     }},
     { t:"你更讨厌被说成？", o:{
-      A:"胆小",
-      B:"冲动",
-      C:"只会学习",
-      D:"只会靠人"
+      A:"胆小：我只是谨慎",
+      B:"冲动：你不懂机会多快",
+      C:"只会学习：我也想变现啊",
+      D:"只会靠人：我只是需要被看见"
     }},
     { t:"如果机会和安全感冲突，你会？", o:{
-      A:"选安全",
-      B:"选机会",
-      C:"研究更久",
-      D:"拉人一起"
+      A:"选安全：稳住不翻车",
+      B:"选机会：宁可搏一把",
+      C:"继续研究：我要确保胜率",
+      D:"拉人一起：有人一起我才敢"
     }},
     { t:"你更愿意用什么换钱？", o:{
-      A:"时间",
-      B:"运气",
-      C:"技能",
-      D:"人脉"
+      A:"时间：稳定打工换稳定现金流",
+      B:"运气：赌对一次就翻盘",
+      C:"技能：我靠硬实力吃饭",
+      D:"人脉：资源在圈子里流动"
     }},
     { t:"你最不甘心的是？", o:{
-      A:"本来可以更稳",
-      B:"本来可以更赚",
-      C:"本来可以更强",
-      D:"本来可以更多资源"
+      A:"本来可以更稳，却因为贪心小亏了一把",
+      B:"本来可以赚更多，却因为怂了一下错过了",
+      C:"本来可以更强，却永远觉得自己准备不够",
+      D:"本来可以拉更多资源，却因为讲义气被坑"
     }},
     { t:"你更相信什么能改变命运？", o:{
-      A:"规则",
-      B:"时机",
-      C:"能力",
-      D:"关系"
+      A:"规则：懂规则的人活得更久",
+      B:"时机：风口来了猪都飞",
+      C:"能力：实力才是通行证",
+      D:"关系：有人带你就是捷径"
     }},
     { t:"你的人生最大焦虑是？", o:{
-      A:"不够安全",
-      B:"不够成功",
-      C:"不够优秀",
-      D:"不够有后台"
+      A:"不够安全：突然出事我扛不住",
+      B:"不够成功：我不想输给同龄人",
+      C:"不够优秀：我怕我不值钱",
+      D:"不够后台：我怕我撑不起局"
     }},
     { t:"当收入下降，你更容易？", o:{
-      A:"收缩",
-      B:"加码",
-      C:"复盘",
-      D:"求助"
+      A:"马上收缩所有非必要开支，保命第一",
+      B:"加倍all in，下注更大的风口",
+      C:"停下来复盘+报课+研究高手路径",
+      D:"找所有能找的人哭诉/求资源/抱大腿"
     }},
     { t:"你对“稳定”的态度是？", o:{
-      A:"必须",
-      B:"无聊",
-      C:"基础",
-      D:"可以共享"
+      A:"必须：没有稳定我会焦虑",
+      B:"无聊：稳定=慢性死亡",
+      C:"基础：先稳住再升级",
+      D:"可共享：有人一起就算稳"
     }},
     { t:"你最羡慕哪种人？", o:{
-      A:"钱多又稳",
-      B:"一夜翻身",
-      C:"实力碾压",
-      D:"背景强大"
+      A:"钱多又稳：睡觉都踏实",
+      B:"一夜翻身：爽文人生",
+      C:"实力碾压：走哪都值钱",
+      D:"背景强大：有人兜底真香"
     }},
     { t:"你更怕什么？", o:{
-      A:"亏钱",
-      B:"错过",
-      C:"退步",
-      D:"没人撑"
+      A:"亏钱：我会怀疑自己",
+      B:"错过：机会不会等我",
+      C:"退步：我不能停",
+      D:"没人撑：我不想再一个人扛"
     }},
     { t:"你最常安慰自己的一句话是？", o:{
-      A:"稳一点就好",
-      B:"下次一定行",
-      C:"我再准备一下",
-      D:"我去找人问问"
+      A:"稳一点就好，别崩",
+      B:"下次一定行，我会翻盘",
+      C:"我再准备一下，下一次稳赢",
+      D:"我去找人问问，总有人懂"
     }},
     { t:"你的人生更像？", o:{
-      A:"打地基",
-      B:"抢跑道",
-      C:"升级打怪",
-      D:"组队通关"
+      A:"打地基：慢，但不塌",
+      B:"抢跑道：先上车再说",
+      C:"升级打怪：等级上去就变强",
+      D:"组队通关：一个人太难"
     }},
     { t:"如果钱不是问题，你会优先提升？", o:{
-      A:"安全垫",
-      B:"速度",
-      C:"能力",
-      D:"圈子"
+      A:"安全垫：我需要底气",
+      B:"速度：我要赢在节奏",
+      C:"能力：我要更值钱",
+      D:"圈子：我要更强的局"
     }},
     { t:"最后一题，你内心最真实的渴望是？", o:{
-      A:"安心",
-      B:"翻盘",
-      C:"强大",
-      D:"有人撑腰"
+      A:"活得安心，再也不用为明天发愁",
+      B:"来一次彻底翻盘，让所有人闭嘴",
+      C:"成为真正牛逼的人，连自己都佩服自己",
+      D:"有人永远站在我这边，永远不让我一个人扛"
     }}
   ];
 
+  // TYPES（毒舌版）
   const TYPES = {
-    A:{
-      tag:"A",
-      title:"🅰 人间稳妥小财神",
-      aka:"（AKA：活到决赛圈型选手）",
-      badge:"安稳守财型",
-      body:`你的财富人设
+    A: {
+      tag: "A",
+      title: "🅰 人间稳妥小财神",
+      aka: "（AKA：活到决赛圈的最后韭菜）",
+      badge: "安稳守财型",
+      body: `你的财富人设
 
-别人研究流量密码，你研究安全边际。
-别人上头冲刺，你在算退路。
+别人all in流量，你在算安全边际。
+别人爆仓哭爹喊娘，你还能睡得着。
 
 你不是不想暴富。
-你只是太清楚——翻车有多疼。
-
-你的人生关键词不是“躺赢”。
-是“别崩”。
+你只是太知道——翻车有多疼，穷疯了更疼。
 
 ⸻
 
 你的隐藏设定
 
-✔ 抗风险能力 MAX
-✔ 情绪稳定天赋
-✔ 余额低于某条线会自动焦虑
+✔ 抗风险能力拉满
+✔ 情绪最稳定那一档
+✔ 低于警戒线自动内耗
 
-你是那种——
-别人爆仓时还能睡觉的人。
+你是那种——别人杠杆爆仓，你还在吃泡面但活着的人。
 
 ⸻
 
 你的金钱盲区
 
-你最大的损失，往往不是亏钱。
-是“再等等”。
+你最大的损失，不是亏的那几万。
+是“再等等”“再确认”的每一分机会成本。
 
-你等趋势确认。
-趋势等你确认吗？
+你把安全感当信仰，结果安全感把你当ATM。
 
 ⸻
 
 2026 升级副本
 
-给自己一个“可翻车额度”。
-
-别把 100% 都锁在安全感里。
-20% 用来试错，
-你会发现你没想象中那么脆。
+强制给自己一个“可翻车额度”——20%资产随便浪。
+不试错，你永远是“稳到死”的那个人。
 
 ⸻
 
 互联网版一句话
 
-你不会最快。
-但你几乎不会退场。
+你不会最快暴富。
+但你大概率是最后还站着的那批人。
 
-⸻
-
-👉 稳妥小财神集合。
-评论区看看我们是不是最后活下来的那批人。`
+👉 稳妥小财神集合。评论区报到：你是不是也总觉得自己“再等等就好了”？`
     },
-    B:{
+
+    B: {
       tag:"B",
       title:"🅱 天生机会捕捉者",
-      aka:"（AKA：风口冲浪选手）",
+      aka:"（AKA：风口冲浪到断网的那种）",
       badge:"机会驱动型",
       body:`你的财富人设
 
-你对“可能翻倍”有天线。
-流量一动，你就感应到了。
-
-你的人生是快节奏剪辑版。
-稳一点？对你来说是 torture。
+流量一有风吹草动，你的肾上腺素就先高潮。
+稳？对你来说是精神折磨。
 
 ⸻
 
 你的隐藏设定
 
-✔ 行动力爆炸
-✔ 敢尝试
-✔ 不甘心当旁观者
-
-别人还在观望，
-你已经试过三次。
+✔ 行动力像吃了兴奋剂
+✔ 敢赌常输但从不怕输
+✔ 天生反脆弱选手
 
 ⸻
 
 你的金钱盲区
 
-你输的不是判断。
-是——不肯收手。
-
-赚的时候像爽文主角。
-回撤的时候像反派觉醒。
+你输的不是方向，是刹不住车。
+赚的时候像爽文男主，回撤时像恐怖片主角。
 
 ⸻
 
 2026 升级副本
 
-所有进场，都写退出。
-
-你不需要变稳。
-你需要一个“自动刹车系统”。
+每笔进场必须写死退出计划。
+没有“这次不一样”的例外。
+你不需要变保守，你需要一个自动断网器。
 
 ⸻
 
 互联网版一句话
 
-你这辈子不会没机会。
-你只怕自己停不下来。
+你这辈子不会缺机会。
+你只怕自己停不下来，把命都梭哈进去。
 
-⸻
-
-👉 冲浪选手集合。
-是不是每次都“差一点就翻倍”？`
+👉 冲浪选手集合。是不是每次都“就差一点就财富自由”？`
     },
-    C:{
+
+    C: {
       tag:"C",
-      title:"🅲 自我增值天花板",
-      aka:"（AKA：升级流主角）",
+      title:"🅲 自我增值天花板（但卡在定价关）",
+      aka:"（AKA：永远觉得自己还不够好的卷王）",
       badge:"深耕成长型",
       body:`你的财富人设
 
-别人追热点，你打磨自己。
-别人研究躺赢，你研究长期复利。
+别人追热点，你在卷技能树。
+别人研究躺赚，你研究长期复利和护城河。
 
-你的人生像 RPG。
-等级慢慢升，突然一波质变。
+你的人生是硬核RPG：慢慢升级，突然一波质变。
 
 ⸻
 
 你的隐藏设定
 
-✔ 学习力拉满
-✔ 复盘能力强
-✔ 自我要求极高
-
-你是那种——
-别人三年变一次，你一年升级三次。
+✔ 学习力像开了挂
+✔ 复盘到凌晨三点
+✔ 对自己要求变态级
 
 ⸻
 
 你的金钱盲区
 
-你最大的问题不是不够强。
-是——不敢定价。
+你最大的敌人不是市场，是“我还不够好”。
+学了三年，作品集完美，就是不敢开口要价。
 
-你学得飞快。
-但变现慢半拍。
+你把“准备充分”当借口，其实是害怕被拒绝。
 
 ⸻
 
 2026 升级副本
 
-每个月必须有一个“可卖成果”。
-
-停止准备。
-上线自己。
+每个月强制上线一个“可卖成果”，哪怕是beta版。
+停止准备，开始卖。
+你迟早会贵，问题是——你什么时候敢要那个价？
 
 ⸻
 
 互联网版一句话
 
-你迟早会贵。
-问题是，你什么时候开口要价。
+你不是没能力，你是没胆子标价。
+别再等“完美”了，市场不等你。
 
-⸻
-
-👉 升级流主角集合。
-是不是永远觉得自己“还不够好”？`
+👉 升级流主角集合。是不是永远觉得自己“再学一点就行了”？`
     },
-    D:{
+
+    D: {
       tag:"D",
-      title:"🅳 团队粘合剂",
-      aka:"（AKA：搞钱搭子体质）",
+      title:"🅳 团队粘合剂（但常被薅羊毛）",
+      aka:"（AKA：最容易被兄弟坑的搞钱搭子）",
       badge:"人脉联结型",
       body:`你的财富人设
 
-你不爱单刷。
-你爱组队。
-
-你天生自带搞钱搭子磁场。
-走到哪都有人愿意和你一起干。
+你不爱单刷，你爱组队。
+你走到哪都有人想和你一起干——也有人想薅你。
 
 ⸻
 
 你的隐藏设定
 
-✔ 资源整合能力强
-✔ 懂共情
-✔ 会撮合
-
-别人单刷副本。
-你开团。
+✔ 资源整合天赋点满
+✔ 共情力像读心术
+✔ 天生开黑团长
 
 ⸻
 
 你的金钱盲区
 
-你太讲情分。
-不太讲利益。
-
-规则不写清，
-最后你收尾。
+你太重情分，太轻规则。
+口头协议当圣旨，最后擦屁股的永远是你。
 
 ⸻
 
 2026 升级副本
 
-所有合作写清三件事：
+每一次合作，必须写清三件事：
+1. 分工
+2. 产出标准
+3. 分成比例 + 退出机制
 
-分工
-产出
-分成
-
-你不缺人脉。
-你缺边界。
+你不缺人脉，你缺的是“先小人后君子”的勇气。
 
 ⸻
 
 互联网版一句话
 
-你不适合躺赢。
-你适合带人赢。
+你不适合一个人躺赢。
+你适合带一群人赢——前提是别再当冤大头。
 
-⸻
-
-👉 搞钱搭子集合。
-你是不是也很难单打独斗？`
+👉 搞钱搭子集合。你是不是也总在“为了兄弟”吃哑巴亏？`
     }
   };
 
+  // DOM helpers
   const $ = id => document.getElementById(id);
   const gate = $("gate");
   const quiz = $("quiz");
@@ -756,7 +714,13 @@
   const ptext = $("ptext");
 
   let idx = 0;
-  const answers = Array(QUESTIONS.length).fill(null); // 存 A/B/C/D
+  const answers = Array(QUESTIONS.length).fill(null);
+
+  // 1) 更安全的 CSS.escape 兜底（避免 selector 因特殊字符报错）
+  function cssEscape(s){
+    if(window.CSS && typeof CSS.escape === "function") return CSS.escape(String(s));
+    return String(s).replace(/["\\]/g, "\\$&");
+  }
 
   function showOnly(which){
     gate.classList.add("hidden");
@@ -769,13 +733,42 @@
 
   function updateProgress(){
     const done = answers.filter(x=>x!==null).length;
-    ptext.textContent = `进度：${done} / ${QUESTIONS.length}`;
-    fill.style.width = `${Math.round(done/QUESTIONS.length*100)}%`;
+    ptext.textContent = "进度：" + done + " / " + QUESTIONS.length;
+    fill.style.width = String(Math.round(done/QUESTIONS.length*100)) + "%";
+  }
+
+  // 3) 每题选项点击音效（WebAudio，无需外部文件）
+  let audioCtx = null;
+  function playTick(){
+    try{
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      const t = audioCtx.currentTime;
+
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+
+      o.type = "triangle";
+      o.frequency.setValueAtTime(880, t);
+      o.frequency.exponentialRampToValueAtTime(520, t + 0.06);
+
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.18, t + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+
+      o.connect(g);
+      g.connect(audioCtx.destination);
+
+      o.start(t);
+      o.stop(t + 0.10);
+    }catch(e){
+      // 静默失败（某些环境禁音）
+    }
   }
 
   function renderQuestion(){
     const q = QUESTIONS[idx];
     const letters = ["A","B","C","D"];
+
     quiz.innerHTML = `
       <div>
         <div class="qindex">第 ${idx+1} 题 / ${QUESTIONS.length}</div>
@@ -800,19 +793,27 @@
       </div>
     `;
 
-    // 恢复已选
+    // 1) 安全写法：不用模板字符串 selector
     if(answers[idx]){
       const v = answers[idx];
-      const input = quiz.querySelector(`input[value="${v}"]`);
+      const sel = 'input[value="' + cssEscape(v) + '"]';
+      const input = quiz.querySelector(sel);
       if(input) input.checked = true;
     }
 
-    // 选项监听：自动下一题 / 出结果
-    quiz.querySelectorAll(`input[name="q${idx}"]`).forEach(r=>{
+    // 1) 安全写法：不用模板字符串 selector
+    const groupName = "q" + idx;
+    const radios = quiz.querySelectorAll('input[name="' + cssEscape(groupName) + '"]');
+
+    // 选项监听：音效 + 自动下一题 / 出结果
+    radios.forEach(r=>{
       r.addEventListener("change", e=>{
+        playTick();
+
         const v = e.target.value;
         answers[idx] = v;
         updateProgress();
+
         if(idx === QUESTIONS.length - 1){
           showResult();
         }else{
@@ -823,7 +824,6 @@
       });
     });
 
-    // 导航按钮
     $("prevBtn").onclick = () => {
       if(idx>0){
         idx--;
@@ -831,6 +831,7 @@
         window.scrollTo({top:0,behavior:"instant"});
       }
     };
+
     $("nextBtn").onclick = () => {
       if(!answers[idx]){
         alert("这一题还没选哦，先选一个再进入下一题。");
@@ -842,9 +843,10 @@
         window.scrollTo({top:0,behavior:"instant"});
       }else{
         if(answers.every(x=>x!==null)) showResult();
-        else alert("还有题没选完哦，可以直接点选选项自动跳题。");
+        else alert("还有题没选完哦。");
       }
     };
+
     $("backBtn").onclick = resetAll;
   }
 
@@ -861,7 +863,6 @@
 
   function avatarHTML(type){
     const t = TYPES[type];
-    // 不同类型换不同小道具
     const props = {
       A:'<div class="prop prop-coin"></div>',
       B:'<div class="prop prop-rocket"><div class="rocket-body"></div><div class="rocket-fire"></div></div>',
@@ -889,21 +890,21 @@
     `;
   }
 
-  // 结果页：带“计算中”遮罩
   function showResult() {
     const overlay = document.createElement('div');
     overlay.id = 'loadingOverlay';
     overlay.innerHTML = `
       <div class="spinner"></div>
-      <div class="loadingText" id="loadStatus">正在同步 2026 财年宏观数据...</div>
+      <div class="loadingText" id="loadStatus">正在量子纠缠你的财富时间线...</div>
     `;
     document.body.appendChild(overlay);
 
+    // loading 文案（赛博）
     const statuses = [
-      "正在扫描你的搞钱潜意识...",
-      "正在比对 48 组金钱阴影模型...",
-      "正在生成 2026 专属行动建议...",
-      "画像已就绪，正在导出卡片..."
+      "正在量子纠缠你的财富时间线...",
+      "正在从链上解码你的金钱DNA...",
+      "正在和2026年的你远程对线...",
+      "画像生成完成，正在签发赛博人格卡..."
     ];
     let sIdx = 0;
     const statusInterval = setInterval(() => {
@@ -961,6 +962,51 @@
     }).catch(()=>alert("截图失败，可以稍后重试一次。"));
   }
 
+  // 2) 一键生成分享文案（复制剪贴板 + fallback）
+  function buildShareText(){
+    const type = computeType();
+    const t = TYPES[type];
+
+    // 取“互联网版一句话”段落：用最后一个 ⸻ 后面那段兜底
+    const parts = t.body.split("⸻");
+    const punch = (parts[parts.length - 1] || "").trim()
+      || "你不会最快暴富，但你大概率活到最后";
+
+    const shareText =
+`刚测了《2026钱味觉醒测试》，结果把我扎心了…
+我是：${t.title} ${t.aka}
+
+一句话总结：
+${punch}
+
+你们是什么体质？快去测！
+口令：${TODAY_CODE}`;
+
+    return shareText;
+  }
+
+  async function copyShareText(){
+    const shareText = buildShareText();
+
+    // 先尝试复制
+    let copied = false;
+    try{
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        await navigator.clipboard.writeText(shareText);
+        copied = true;
+      }
+    }catch(e){}
+
+    if(copied){
+      alert("已复制到剪贴板！直接粘贴发朋友圈/小红书～\n\n" + shareText);
+      return;
+    }
+
+    // fallback：用 prompt 让用户长按复制（iOS 很稳）
+    window.prompt("复制这段分享文案（长按全选复制）：", shareText);
+  }
+
+  // 事件绑定
   $("unlock").onclick = () => {
     const v = ($("code").value || "").trim();
     if(v !== TODAY_CODE){
@@ -981,6 +1027,11 @@
 
   $("shotBtn").onclick = generateShot;
   $("againBtn").onclick = resetAll;
+
+  // 分享按钮
+  $("shareTextBtn").onclick = () => {
+    copyShareText();
+  };
 
   updateProgress();
 </script>
