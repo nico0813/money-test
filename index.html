@@ -306,7 +306,6 @@
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .loadingText { font-size: 14px; color: var(--sub); letter-spacing: 1px; text-align:center; }
 
-    /* 小屏更友好 */
     @media (max-width: 500px) {
       .avatar { width: 80px; height: 100px; }
       .faceWrap { width: 55%; height: 55%; }
@@ -367,10 +366,6 @@
     <div class="row navRow">
       <button class="primary" id="shotBtn">生成截图卡片</button>
       <button id="againBtn">返回最开始重新测</button>
-    </div>
-
-    <!-- 2) 分享话术按钮（提升二次传播） -->
-    <div class="row navRow">
       <button id="shareTextBtn" class="primary">一键生成分享文案</button>
     </div>
 
@@ -392,7 +387,7 @@
   // ====== 配置区 ======
   const TODAY_CODE = "WAKEN2026";
 
-  // QUESTIONS（你这版升级）
+  // 题库（你给的那套情绪版）
   const QUESTIONS = [
     { t:"你银行卡余额低于 4 位数时，你最真实的反应是？", o:{
       A:"立刻焦虑，开始算每一分钱的去向",
@@ -516,7 +511,6 @@
     }}
   ];
 
-  // TYPES（毒舌版）
   const TYPES = {
     A: {
       tag: "A",
@@ -704,7 +698,6 @@
     }
   };
 
-  // DOM helpers
   const $ = id => document.getElementById(id);
   const gate = $("gate");
   const quiz = $("quiz");
@@ -716,7 +709,7 @@
   let idx = 0;
   const answers = Array(QUESTIONS.length).fill(null);
 
-  // 1) 更安全的 CSS.escape 兜底（避免 selector 因特殊字符报错）
+  // selector 安全转义
   function cssEscape(s){
     if(window.CSS && typeof CSS.escape === "function") return CSS.escape(String(s));
     return String(s).replace(/["\\]/g, "\\$&");
@@ -737,7 +730,7 @@
     fill.style.width = String(Math.round(done/QUESTIONS.length*100)) + "%";
   }
 
-  // 3) 每题选项点击音效（WebAudio，无需外部文件）
+  // ✅ 柔和音效
   let audioCtx = null;
   function playTick(){
     try{
@@ -747,28 +740,25 @@
       const o = audioCtx.createOscillator();
       const g = audioCtx.createGain();
 
-      o.type = "triangle";
-      o.frequency.setValueAtTime(880, t);
-      o.frequency.exponentialRampToValueAtTime(520, t + 0.06);
+      o.type = "sine";
+      o.frequency.setValueAtTime(480, t);
+      o.frequency.exponentialRampToValueAtTime(420, t + 0.05);
 
       g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(0.18, t + 0.01);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+      g.gain.exponentialRampToValueAtTime(0.035, t + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.08);
 
       o.connect(g);
       g.connect(audioCtx.destination);
 
       o.start(t);
-      o.stop(t + 0.10);
-    }catch(e){
-      // 静默失败（某些环境禁音）
-    }
+      o.stop(t + 0.09);
+    }catch(e){}
   }
 
   function renderQuestion(){
     const q = QUESTIONS[idx];
     const letters = ["A","B","C","D"];
-
     quiz.innerHTML = `
       <div>
         <div class="qindex">第 ${idx+1} 题 / ${QUESTIONS.length}</div>
@@ -793,7 +783,7 @@
       </div>
     `;
 
-    // 1) 安全写法：不用模板字符串 selector
+    // 恢复已选
     if(answers[idx]){
       const v = answers[idx];
       const sel = 'input[value="' + cssEscape(v) + '"]';
@@ -801,15 +791,12 @@
       if(input) input.checked = true;
     }
 
-    // 1) 安全写法：不用模板字符串 selector
     const groupName = "q" + idx;
     const radios = quiz.querySelectorAll('input[name="' + cssEscape(groupName) + '"]');
 
-    // 选项监听：音效 + 自动下一题 / 出结果
     radios.forEach(r=>{
       r.addEventListener("change", e=>{
         playTick();
-
         const v = e.target.value;
         answers[idx] = v;
         updateProgress();
@@ -899,7 +886,6 @@
     `;
     document.body.appendChild(overlay);
 
-    // loading 文案（赛博）
     const statuses = [
       "正在量子纠缠你的财富时间线...",
       "正在从链上解码你的金钱DNA...",
@@ -962,32 +948,29 @@
     }).catch(()=>alert("截图失败，可以稍后重试一次。"));
   }
 
-  // 2) 一键生成分享文案（复制剪贴板 + fallback）
+  // ✅ 不暴露口令的分享文案
   function buildShareText(){
     const type = computeType();
     const t = TYPES[type];
 
-    // 取“互联网版一句话”段落：用最后一个 ⸻ 后面那段兜底
     const parts = t.body.split("⸻");
     const punch = (parts[parts.length - 1] || "").trim()
-      || "你不会最快暴富，但你大概率活到最后";
+      || "我以为我在搞钱，结果是在搞自己。";
 
     const shareText =
-`刚测了《2026钱味觉醒测试》，结果把我扎心了…
+`刚测了《2026钱味觉醒测试》，结果有点狠…
 我是：${t.title} ${t.aka}
 
 一句话总结：
 ${punch}
 
-你们是什么体质？快去测！
+你们也去测一下，评论告诉我你是什么体质`;
 
     return shareText;
   }
 
   async function copyShareText(){
     const shareText = buildShareText();
-
-    // 先尝试复制
     let copied = false;
     try{
       if(navigator.clipboard && navigator.clipboard.writeText){
@@ -997,15 +980,13 @@ ${punch}
     }catch(e){}
 
     if(copied){
-      alert("已复制到剪贴板！直接粘贴发朋友圈/小红书～\n\n" + shareText);
+      alert("已复制分享文案！直接粘贴发朋友圈/小红书即可～\n\n" + shareText);
       return;
     }
-
-    // fallback：用 prompt 让用户长按复制（iOS 很稳）
+    // iOS fallback：prompt 长按复制
     window.prompt("复制这段分享文案（长按全选复制）：", shareText);
   }
 
-  // 事件绑定
   $("unlock").onclick = () => {
     const v = ($("code").value || "").trim();
     if(v !== TODAY_CODE){
@@ -1026,11 +1007,7 @@ ${punch}
 
   $("shotBtn").onclick = generateShot;
   $("againBtn").onclick = resetAll;
-
-  // 分享按钮
-  $("shareTextBtn").onclick = () => {
-    copyShareText();
-  };
+  $("shareTextBtn").onclick = copyShareText;
 
   updateProgress();
 </script>
